@@ -1,0 +1,33 @@
+# Build folders
+/build/
+bin/
+out/
+
+# Compiled / generated files
+*.o
+*.obj
+*.exe
+*.out
+*.dll
+*.so
+*.a
+*.dylib
+*.lib
+*.json
+*.log
+*.tmp
+*.pdb
+*.dSYM/
+*.stackdump
+
+
+# IDE configs
+.vscode/
+.idea/
+*.code-workspace
+
+# System junk
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
