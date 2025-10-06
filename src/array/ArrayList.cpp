@@ -96,13 +96,26 @@ void ArrayList<T>::add(int index, const T& e) {
 template<class T>
 T ArrayList<T>::removeAt(int index) {
     // TODO
-    return T{};
+    if (index < 0 || index >= count) thorw out_of_range("Index is invalid");
+    T removed = arr[index];
+    
+    for (int i = index; i < count-1; i++){
+        arr[i] = arr[i+1];
+    }
+    count--;
+    return removed;
 }
 
 // Xóa phần tử có giá trị item (nếu tồn tại)
 template<class T>
 bool ArrayList<T>::removeItem(const T& item) {
     // TODO
+    for (int i = 0; i < count; i++){
+        if (arr[i] == arr[item]){
+            removeAt(i);
+            return true;
+        }
+    }
     return false;
 }
 
@@ -110,6 +123,7 @@ bool ArrayList<T>::removeItem(const T& item) {
 template<class T>
 bool ArrayList<T>::empty() const {
     // TODO
+    if (count == 0) return true;
     return true;
 }
 
@@ -117,33 +131,42 @@ bool ArrayList<T>::empty() const {
 template<class T>
 int ArrayList<T>::size() const {
     // TODO
-    return 0;
+    return count;
 }
 
 // Xóa toàn bộ danh sách
 template<class T>
 void ArrayList<T>::clear() {
     // TODO
+    delete [] arr;
+    count = 0;
+    capacity = 10;
+    arr = new T[capacity];
 }
 
 // Lấy phần tử tại vị trí index
 template<class T>
 T& ArrayList<T>::get(int index) {
     // TODO
-    static T temp{};
-    return temp;
+    if (index < 0 || index >= count) throw out_of_range("Index is invalid!");
+    return arr[index];
 }
 
 // Gán giá trị mới cho phần tử tại vị trí index
 template<class T>
 void ArrayList<T>::set(int index, const T& e) {
     // TODO
+    if (index < 0 || index >= count) throw out_of_range("Index is invalid!");
+    arr[index] = e;
 }
 
 // Trả về vị trí đầu tiên của phần tử item (hoặc -1 nếu không có)
 template<class T>
 int ArrayList<T>::indexOf(const T& item) const {
     // TODO
+    for (int i = 0; i < count; i++){
+        if (arr[i] == item) return i;
+    }
     return -1;
 }
 
@@ -151,6 +174,9 @@ int ArrayList<T>::indexOf(const T& item) const {
 template<class T>
 bool ArrayList<T>::contains(const T& item) const {
     // TODO
+    for (int i = 0; i < count; i++){
+        if (arr[i] == item) return true;
+    }
     return false;
 }
 
@@ -158,37 +184,49 @@ bool ArrayList<T>::contains(const T& item) const {
 template<class T>
 T& ArrayList<T>::front() {
     // TODO
-    static T temp{};
-    return temp;
+    return arr[0];
 }
 
 // Trả về phần tử cuối cùng của danh sách
 template<class T>
 T& ArrayList<T>::back() {
     // TODO
-    static T temp{};
-    return temp;
+    return arr[count];
 }
 
 // Xóa và trả về phần tử đầu tiên của danh sách
 template<class T>
 T ArrayList<T>::pop_front() {
     // TODO
-    return T{};
+    T temp = arr[0];
+    for (int i = 0; i < count-1; i++){
+        arr[i] = arr[i+1];
+    }
+    count--;
+    return temp;
 }
 
 // Xóa và trả về phần tử cuối cùng của danh sách
 template<class T>
 T ArrayList<T>::pop_back() {
     // TODO
-    return T{};
+    if (count == 0) throw out_of_range("Empty");
+    T temp = arr[count-1];
+    arr[count-1] = T();
+    return temp;
 }
 
 // Trả về chuỗi biểu diễn danh sách (ví dụ: [1, 2, 3])
 template<class T>
 string ArrayList<T>::toString() const {
     // TODO
-    return "[]";
+    string re = "[";
+    for (int i = 0; i < count; i++){
+        re += to_string(arr[i]);
+        if (i < count-1) re += ", ";
+    }
+    re += "]";
+    return re;
 }
 
 // ======================= ITERATOR =======================

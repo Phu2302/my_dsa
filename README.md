@@ -5,6 +5,14 @@ This project is part of my learning journey to master data structures and algori
 
 ---
 
+## ⚙️ Features
+- **Modular implementation** of classic data structures (List, Stack, Queue, Hash, Tree, Graph, etc.)
+- Includes **sorting**, **searching**, and **graph algorithms**.
+- Supports **template classes** for reusability and flexibility.
+- Organized structure for **easy testing and extension**.
+
+---
+
 ## 📂 Project Structure
 
 <details>
