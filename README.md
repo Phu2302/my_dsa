@@ -59,16 +59,16 @@ my_dsa/
 │
 ├── src/
 │   ├── array/ArrayList.cpp
-│   ├── linked_list/SLinkedList.tpp
-│   ├── linked_list/DLinkedList.tpp
-│   ├── queue/Queue.tpp
-│   ├── queue/Deque.tpp
-│   ├── stack/Stack.tpp
-│   ├── hash/Chaining.tpp
-│   ├── hash/OpenAddressing.tpp
-│   ├── tree/BST.tpp
-│   ├── tree/AVL.tpp
-│   ├── tree/Heap.tpp
+│   ├── linked_list/SLinkedList.cpp
+│   ├── linked_list/DLinkedList.cpp
+│   ├── queue/Queue.cpp
+│   ├── queue/Deque.cpp
+│   ├── stack/Stack.cpp
+│   ├── hash/Chaining.cpp
+│   ├── hash/OpenAddressing.cpp
+│   ├── tree/BST.cpp
+│   ├── tree/AVL.cpp
+│   ├── tree/Heap.cpp
 │   └── graph/AdjListGraph.cpp
 │
 ├── algorithms/

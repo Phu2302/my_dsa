@@ -233,9 +233,17 @@ string ArrayList<T>::toString() const {
 
 // Khởi tạo iterator
 template<class T>
-ArrayList<T>::Iterator::Iterator(ArrayList<T>* list, int index)
-    : pList(list), cursor(index) {
+ArrayList<T>::Iterator::Iterator(ArrayList<T>* list, int index) {
     // TODO
+    if (list == nullptr){
+        pList = nullptr;
+        cursor = 0;
+        return;
+    }
+    if (index < 0 || index > list->count) throw out_of_range("Index is invalid!");
+    
+    pList = list;
+    cursor = index;
 }
 
 // Toán tử gán
@@ -243,6 +251,10 @@ template<class T>
 typename ArrayList<T>::Iterator&
 ArrayList<T>::Iterator::operator=(const Iterator& other) {
     // TODO
+    if (this != &other){
+        this->pList = other.pList;
+        this->cursor = other.cursor;
+    }
     return *this;
 }
 
@@ -250,15 +262,15 @@ ArrayList<T>::Iterator::operator=(const Iterator& other) {
 template<class T>
 T& ArrayList<T>::Iterator::operator*() {
     // TODO
-    static T temp{};
-    return temp;
+    return pList->arr[cursor];
 }
 
 // So sánh iterator khác nhau
 template<class T>
 bool ArrayList<T>::Iterator::operator!=(const Iterator& other) const {
     // TODO
-    return true;
+    if (this->pList != other.pList || this->cursor != other.cursor) return true; 
+    return false;
 }
 
 // Tiến tiền tố ++it
@@ -266,6 +278,9 @@ template<class T>
 typename ArrayList<T>::Iterator&
 ArrayList<T>::Iterator::operator++() {
     // TODO
+    if (pList == nullptr) throw out_of_range("Iterator is null!");
+    if (cursor >= pList->count) throw out_of_range("This is the end, cannot move");
+    ++cursor;
     return *this;
 }
 
@@ -274,7 +289,11 @@ template<class T>
 typename ArrayList<T>::Iterator
 ArrayList<T>::Iterator::operator++(int) {
     // TODO
-    return *this;
+    if (pList == nullptr) throw out_of_range("Iterator is null!");
+    if (cursor >= pList->count) throw out_of_range("This is the end, cannot move");
+    Iterator old = *this;
+    cursor++;
+    return old;
 }
 
 // Lùi tiền tố --it
@@ -282,6 +301,9 @@ template<class T>
 typename ArrayList<T>::Iterator&
 ArrayList<T>::Iterator::operator--() {
     // TODO
+    if (pList == nullptr) throw out_of_range("Iterator is null!");
+    if (cursor <= 0) throw out_of_range("This is first element, cannot move to left");
+    --cursor;
     return *this;
 }
 
@@ -290,7 +312,11 @@ template<class T>
 typename ArrayList<T>::Iterator
 ArrayList<T>::Iterator::operator--(int) {
     // TODO
-    return *this;
+    if (pList == nullptr) throw out_of_range("Iterator is null!");
+    if (cursor <= 0) throw out_of_range("This is first element, cannot move to left");
+    Iterator old = *this;
+    cursor--;
+    return old;
 }
 
 // Trả về iterator đầu danh sách
