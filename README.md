@@ -92,8 +92,8 @@ my_dsa/
 │
 ├── CMakeLists.txt
 └── README.md
-</details>
 ```
+</details>
 
 ## 🧱 Build & Run Instructions  
 
