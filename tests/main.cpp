@@ -2,7 +2,7 @@
 
 // Gọi test functions từ các file test
 void test_array();
-//void test_linked_list();
+void test_slinkedlist();
 //void test_queue();
 //void test_stack();
 //void test_hash();
@@ -11,6 +11,7 @@ void test_array();
 //void test_sorting();
 
 int main() {
-    test_array();
+    //test_array();
+    test_slinkedlist();
     return 0;
 }

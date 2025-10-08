@@ -1,28 +1,28 @@
 #include "array/ArrayList.h"
 #include "lib.h"
 
-template <typename T>
-void testArrayListTemplate() {
+template<typename T>
+void testArrayListTemplate(const string& typeName) {
     ArrayList<T> arr;
-    cout << "=== Test ArrayList<" << typeid(T).name() << "> ===\n\n";
+    cout << "=== Test ArrayList<" << typeName << "> ===\n\n";
 
     // ==== Test add(e) ====
     cout << "--- Test add(e) ---\n";
-    arr.add((T)10);
-    arr.add((T)20);
-    arr.add((T)30);
+    arr.add(10);
+    arr.add(20);
+    arr.add(30);
     cout << "After add(10,20,30): " << arr.toString() << endl;
-    arr.add((T)40);
-    arr.add((T)50);
+    arr.add(40);
+    arr.add(50);
     cout << "After add(40,50): " << arr.toString() << endl;
 
     // ==== Test add(index, e) ====
     cout << "\n--- Test add(index, e) ---\n";
-    arr.add(0, (T)99);   // chèn đầu
+    arr.add(0, 99);   // chèn đầu
     cout << "After add(0,99): " << arr.toString() << endl;
-    arr.add(3, (T)77);   // chèn giữa
+    arr.add(3, 77);   // chèn giữa
     cout << "After add(3,77): " << arr.toString() << endl;
-    arr.add(arr.size(), (T)88); // chèn cuối
+    arr.add(arr.size(), 88); // chèn cuối
     cout << "After add(size(),88): " << arr.toString() << endl;
 
     // ==== Test get ====
@@ -33,11 +33,11 @@ void testArrayListTemplate() {
 
     // ==== Test set ====
     cout << "\n--- Test set(index, e) ---\n";
-    arr.set(0, (T)111);
+    arr.set(0, 111);
     cout << "After set(0,111): " << arr.toString() << endl;
-    arr.set(2, (T)222);
+    arr.set(2, 222);
     cout << "After set(2,222): " << arr.toString() << endl;
-    arr.set(arr.size()-1, (T)333);
+    arr.set(arr.size()-1, 333);
     cout << "After set(last,333): " << arr.toString() << endl;
 
     // ==== Test removeAt ====
@@ -51,10 +51,10 @@ void testArrayListTemplate() {
 
     // ==== Test indexOf & contains ====
     cout << "\n--- Test indexOf & contains ---\n";
-    cout << "Index of 30: " << arr.indexOf((T)30) << endl;
-    cout << "Index of 999: " << arr.indexOf((T)999) << endl;
-    cout << "Contains 20? " << (arr.contains((T)20) ? "Yes" : "No") << endl;
-    cout << "Contains 999? " << (arr.contains((T)999) ? "Yes" : "No") << endl;
+    cout << "Index of 30: " << arr.indexOf(30) << endl;
+    cout << "Index of 999: " << arr.indexOf(999) << endl;
+    cout << "Contains 20? " << (arr.contains(20) ? "Yes" : "No") << endl;
+    cout << "Contains 999? " << (arr.contains(999) ? "Yes" : "No") << endl;
 
     // ==== Test size & empty ====
     cout << "\n--- Test size() & empty() ---\n";
@@ -69,9 +69,9 @@ void testArrayListTemplate() {
 
     // ==== Test copy constructor ====
     cout << "\n--- Test copy constructor ---\n";
-    arr.add((T)1);
-    arr.add((T)2);
-    arr.add((T)3);
+    arr.add(1);
+    arr.add(2);
+    arr.add(3);
     ArrayList<T> arr2(arr);
     cout << "Original: " << arr.toString() << endl;
     cout << "Copy: " << arr2.toString() << endl;
@@ -86,7 +86,7 @@ void testArrayListTemplate() {
     cout << "\n=== Test Iterator ===\n";
 
     ArrayList<T> arr4;
-    arr4.add((T)10); arr4.add((T)20); arr4.add((T)30);
+    arr4.add(10); arr4.add(20); arr4.add(30);
     for (auto it = arr4.begin(); it != arr4.end(); ++it) {
         cout << *it << " ";
     }
@@ -111,8 +111,8 @@ void testArrayListTemplate() {
     // ==== Test Iterator Constructor ====
     cout << "\n--- Test Iterator Constructor ---\n";
     ArrayList<T> arr5;
-    arr5.add((T)100);
-    arr5.add((T)200);
+    arr5.add(100);
+    arr5.add(200);
 
     try {
         typename ArrayList<T>::Iterator itA(&arr5, 0);
@@ -122,7 +122,7 @@ void testArrayListTemplate() {
 
         typename ArrayList<T>::Iterator itC(&arr5, -1); // invalid
         cout << *itC << endl;
-    } catch (out_of_range& e) {
+    } catch (std::out_of_range& e) {
         cout << "Caught exception: " << e.what() << endl;
     }
 
@@ -138,9 +138,8 @@ void testArrayListTemplate() {
     cout << "\n=== END TEST ===\n\n";
 }
 
-// Hàm test public để main.cpp gọi
 void test_array() {
-    testArrayListTemplate<int>();      // test với int
+    testArrayListTemplate<int>("int");      // test với int
     // testArrayListTemplate<double>(); // có thể mở thêm
     // testArrayListTemplate<string>();
 }

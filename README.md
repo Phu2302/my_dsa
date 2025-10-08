@@ -117,7 +117,7 @@ cmake --build build_win
 🚀 **Run the program:**
 
 ```bash
-build_win\main.exe
+build_win/main.exe
 ```
 
 ---

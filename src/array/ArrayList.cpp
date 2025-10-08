@@ -124,7 +124,7 @@ template<class T>
 bool ArrayList<T>::empty() const {
     // TODO
     if (count == 0) return true;
-    return true;
+    return false;
 }
 
 // Trả về số lượng phần tử trong danh sách

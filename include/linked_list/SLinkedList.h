@@ -13,7 +13,10 @@ private:
         T data;      // dữ liệu
         Node* next;  // con trỏ tới nút tiếp theo
 
-        Node(const T& val, Node* nxt = nullptr);
+        Node(const T& val, Node* nxt = nullptr){
+            data = val;
+            next = nxt;
+        }
     };
 
     Node* head;  // nút đầu

@@ -14,7 +14,25 @@ SLinkedList<T>::SLinkedList() {
 // Constructor sao chép
 template<class T>
 SLinkedList<T>::SLinkedList(const SLinkedList<T>& other) {
+    // tạo list rỗng -> gán từng cái other vào list rỗng
+    head = nullptr;
+    tail = nullptr;
+    count = 0;
 
+    Node *cur = other.head;
+    while (cur != nullptr){
+        Node *newNode = new Node(cur->data, nullptr);
+        if (head == nullptr){
+            head = newNode;
+            tail = newNode;
+        }
+        else {
+            tail->next = newNode;
+            tail = newNode;
+        }
+        count++;
+        cur = cur->next;
+    }
 }
 
 // Destructor: giải phóng toàn bộ bộ nhớ
@@ -34,7 +52,33 @@ SLinkedList<T>::~SLinkedList() {
 // Toán tử gán
 template<class T>
 SLinkedList<T>& SLinkedList<T>::operator=(const SLinkedList<T>& other) {
-    
+    // xóa list hiện tại -> tạo list rỗng -> gán other vào list rỗng
+    if (this != &other){
+        Node *cur = head;
+        while (cur != nullptr){
+            Node *del = cur;
+            cur = cur->next;
+            delete del;
+        }
+        tail = nullptr;
+        head = nullptr;
+        count = 0;
+
+        Node *curOther = other.head;
+        while (curOther != nullptr){
+            Node *newNode = new Node(curOther->data, nullptr);
+            if (head == nullptr){
+                head = newNode;
+                tail = newNode;
+            }
+            else {
+                tail->next = newNode;
+                tail = newNode;
+            }
+            count++;
+            curOther = curOther->next;
+        }
+    }
     return *this;
 }
 
@@ -67,14 +111,14 @@ void SLinkedList<T>::add(int index, const T& e) {
         return;
     }
 
-    if (index = 0){
+    if (index == 0){
         newNode->next = head;
         head = newNode;
         count++;
         return;
     }
 
-    if (index = count){
+    if (index == count){
         tail->next = newNode;
         tail = newNode;
         count++;
@@ -94,7 +138,7 @@ void SLinkedList<T>::add(int index, const T& e) {
 template<class T>
 T SLinkedList<T>::removeAt(int index) {
     if (index < 0 || index >= count) throw out_of_range("Index is invalid!");
-    if (count == 0) throw out_of_range("Emty List");
+    if (count == 0) throw out_of_range("Empty List");
 
     if (count == 1){
         Node *del = head;
@@ -121,7 +165,7 @@ T SLinkedList<T>::removeAt(int index) {
             cur = cur->next;
         }
         Node *del = cur->next;
-        T val = cur->next->data;
+        T val = del->data;
         tail = cur;
         delete del;
         cur->next = nullptr;
@@ -144,10 +188,15 @@ T SLinkedList<T>::removeAt(int index) {
 // Xóa phần tử có giá trị item (nếu tồn tại)
 template<class T>
 bool SLinkedList<T>::removeItem(const T& item) {
-    if (count == 0) throw out_of_range("Emty List");
+    if (count == 0) throw out_of_range("Empty List");
     Node *cur = head;
+    int idx = 0;
     while (cur != nullptr){
-        if (cur->data == item) return true;
+        if (cur->data == item) {
+            SLinkedList::removeAt(idx);
+            return true;
+        }
+        idx++;
         cur = cur->next;
     }
     return false;
@@ -169,9 +218,8 @@ int SLinkedList<T>::size() const {
 // Xóa toàn bộ danh sách
 template<class T>
 void SLinkedList<T>::clear() {
-    if (count == 0) throw out_of_range("Emty List");
     Node *cur = head;
-    while (cur != head){
+    while (cur != nullptr){
         Node *del = cur;
         cur = cur->next;
         delete del;
@@ -184,7 +232,7 @@ void SLinkedList<T>::clear() {
 // Lấy phần tử tại vị trí index
 template<class T>
 T& SLinkedList<T>::get(int index) {
-    if (count == 0) throw out_of_range("Emty List");
+    if (count == 0) throw out_of_range("Empty List");
     if (index < 0 || index >= count) throw out_of_range("Index is invalid");
     Node *cur = head;
     for (int i = 0; i < index; i++){
@@ -196,7 +244,7 @@ T& SLinkedList<T>::get(int index) {
 // Gán giá trị mới cho phần tử tại vị trí index
 template<class T>
 void SLinkedList<T>::set(int index, const T& e) {
-    if (count == 0) throw out_of_range("Emty List");
+    if (count == 0) throw out_of_range("Empty List");
     if (index < 0 || index >= count) throw out_of_range("Index is invalid");
     Node *cur = head;
     for (int i = 0; i < index; i++){
@@ -208,10 +256,10 @@ void SLinkedList<T>::set(int index, const T& e) {
 // Trả về vị trí đầu tiên của phần tử item (hoặc -1 nếu không có)
 template<class T>
 int SLinkedList<T>::indexOf(const T& item) const {
-    if (count == 0) throw out_of_range("Emty List");
+    if (count == 0) throw out_of_range("Empty List");
     Node *cur = head;
     int idx = 0;
-    while (cur != head){
+    while (cur != nullptr){
         if (cur->data == item) return idx;
         idx++;
         cur = cur->next;
@@ -222,9 +270,9 @@ int SLinkedList<T>::indexOf(const T& item) const {
 // Kiểm tra danh sách có chứa phần tử item không
 template<class T>
 bool SLinkedList<T>::contains(const T& item) const {
-    if (count == 0) throw out_of_range("Emty List");
+    if (count == 0) throw out_of_range("Empty List");
     Node *cur = head;
-    while (cur != head){
+    while (cur != nullptr){
         if (cur->data == item) return true;
         cur = cur->next;
     }
@@ -234,24 +282,31 @@ bool SLinkedList<T>::contains(const T& item) const {
 // Trả về phần tử đầu tiên của danh sách
 template<class T>
 T& SLinkedList<T>::front() {
-    if (count == 0) throw out_of_range("Emty List");
-    T val = head->data;
-    return val;
+    if (count == 0) throw out_of_range("Empty List");
+    return head->data;
 }
 
 // Trả về phần tử cuối cùng của danh sách
 template<class T>
 T& SLinkedList<T>::back() {
-    if (count == 0) throw out_of_range("Emty List");
-    T val = tail->data;
-    return val;
+    if (count == 0) throw out_of_range("Empty List");
+    return tail->data;
 }
 
 // Xóa và trả về phần tử đầu tiên của danh sách
 template<class T>
 T SLinkedList<T>::pop_front() {
-    if (count == 0) throw out_of_range("Emty List");
+    if (count == 0) throw out_of_range("Empty List");
     Node *del = head;
+    if (count == 1){
+        Node *del = head;
+        T val = del->data;
+        head = nullptr;
+        tail = nullptr;
+        delete del;
+        count--;
+        return val;
+    }
     T val = del->data;
     head = head->next;
     delete del;
@@ -262,10 +317,21 @@ T SLinkedList<T>::pop_front() {
 // Xóa và trả về phần tử cuối cùng của danh sách
 template<class T>
 T SLinkedList<T>::pop_back() {
+    if (count == 0) throw out_of_range("Empty List");
     Node *cur = head;
+    if (count == 1){
+        Node *del = head;
+        T val = del->data;
+        head == nullptr;
+        tail == nullptr;
+        delete del;
+        count--;
+        return val;
+    }
     while (cur->next->next != nullptr){
         cur = cur->next;
     }
+
     Node *del = cur->next;
     T val = del->data;
     tail = cur;
@@ -296,46 +362,45 @@ string SLinkedList<T>::toString() const {
 
 // Khởi tạo iterator tại node cho trước
 template<class T>
-SLinkedList<T>::Iterator::Iterator(Node<T>* node)
-    : current(node) {
-    
+SLinkedList<T>::Iterator::Iterator(Node *node){
+    current = node;
 }
 
 // Toán tử gán
 template<class T>
 typename SLinkedList<T>::Iterator&
 SLinkedList<T>::Iterator::operator=(const Iterator& other) {
-    
+    current = other.current;
     return *this;
 }
 
 // Truy cập phần tử hiện tại
 template<class T>
 T& SLinkedList<T>::Iterator::operator*() {
-    
-    static T temp{};
-    return temp;
+    if (current == nullptr) throw out_of_range("Iterator is out of range!");
+    return current->data;
 }
 
 // So sánh iterator khác nhau
 template<class T>
 bool SLinkedList<T>::Iterator::operator!=(const Iterator& other) const {
-    
-    return true;
+    if (current != other.current) return true;
+    return false;
 }
 
 // So sánh iterator bằng nhau
 template<class T>
 bool SLinkedList<T>::Iterator::operator==(const Iterator& other) const {
-    
-    return false;
+    if (current != other.current) return false;
+    return true;
 }
 
 // Tiến tiền tố ++it
 template<class T>
 typename SLinkedList<T>::Iterator&
 SLinkedList<T>::Iterator::operator++() {
-    
+    if (current == nullptr) throw out_of_range("This is the end, cannot move");
+    current = current->next;
     return *this;
 }
 
@@ -343,8 +408,10 @@ SLinkedList<T>::Iterator::operator++() {
 template<class T>
 typename SLinkedList<T>::Iterator
 SLinkedList<T>::Iterator::operator++(int) {
-    
-    return *this;
+    if (current == nullptr) throw out_of_range("This is the end, cannot move");
+    Iterator old = *this;
+    current = current->next;
+    return old;
 }
 
 // Trả về iterator đầu danh sách
@@ -367,392 +434,3 @@ template class SLinkedList<double>;
 template class SLinkedList<string>;
 template class SLinkedList<char>;
 template class SLinkedList<float>;
-
-
-
-/*
-// ================= Constructor & Destructor ================= //
-
-// Constructor
-SLinkedList::SLinkedList() {
-    : Khởi tạo head, tail = nullptr, count = 0
-    head = nullptr;
-    tail = nullptr;
-    count = 0;
-}
-
-// Destructor
-SLinkedList::~SLinkedList() {
-    : Giải phóng toàn bộ node để tránh rò rỉ bộ nhớ
-    Node *cur = head;
-    while (cur != nullptr){
-        Node *temp = cur;
-        cur = cur->next;
-        delete temp;
-    }
-    head = nullptr;
-    tail = nullptr;
-    count = 0;
-}
-
-// ================= Các hàm thao tác ================= //
-
-// Thêm cuối
-void SLinkedList::add(int e) {
-    
-    Node *newNode = new Node(e);
-    if (head == nullptr && tail == nullptr){
-        head = newNode;
-        tail = newNode;
-        count++;
-    }
-    else {
-        tail->next = newNode;
-        tail = newNode;
-        count++;
-    }
-}
-
-// Thêm tại index
-
-void SLinkedList::add(int index, int e) {
-    Node *newNode = new Node(e);
-    Node *current = head;
-    
-    if (count == 0){
-        head = newNode;
-        tail = newNode;
-        count++;
-        return;
-    }
-    
-    if (index == 0){
-        newNode->next = head;
-        head = newNode;
-        count++;
-        return;
-    }
-    
-    if (index == count){
-        tail->next = newNode;
-        tail = newNode;
-        count++;
-        return;
-    }
-    
-    for (int i = 0; i < index-1; i++){
-        current = current->next;
-    }
-    newNode->next = current->next;
-    current->next = newNode;
-    count++;
-}
-
-// Xóa tại index
-int SLinkedList::removeAt(int index) {
-    : nếu index không hợp lệ -> throw out_of_range("Index is invalid!")
-    if (head == nullptr && tail == nullptr) throw out_of_range("Empty list!");
-    if (index < 0 || index > count - 1) throw out_of_range("Index is invalid!");
-    if (count == 1){
-        Node *temp = head;
-        int val = temp->data;
-        delete temp;
-        head = nullptr;
-        tail = nullptr;
-        count--;
-        return val;
-    }
-
-    if (index == 0){
-        Node *temp = head;
-        int val = temp->data;
-        head = head->next;
-        delete temp;
-        count--;
-        return val;
-    }
-
-    if (index == count-1){
-        Node *cur = head;
-        while (cur->next->next != nullptr){
-            cur = cur->next;
-        }
-        Node *temp = tail;
-        int val = temp->data;
-        cur->next = nullptr;
-        tail = cur;
-        delete temp;
-        count--;
-        return val;
-    }
-
-    Node *cur = head;
-    for (int i = 0; i < index-1; i++){
-        cur = cur->next;
-    }
-    Node *temp = cur->next;
-    int val = temp->data;
-    cur->next = cur->next->next;
-    delete temp;
-    count--;
-    return val;
-}
-
-// Xóa phần tử có giá trị item
-bool SLinkedList::removeItem(int item) {
-    : duyệt list, tìm node có data == item, xóa node đầu tiên tìm thấy
-    Node *cur = head;
-    int index = 0;
-    while (cur != nullptr) {
-        if (cur->data == item) {
-            SLinkedList::removeAt(index);
-            return true;
-        }
-        cur = cur->next;
-        index++;    
-    }
-    return false;
-}
-
-// Kiểm tra rỗng
-bool SLinkedList::empty() const {
-    
-    if (count == 0) return true;
-    return false;
-}
-
-// Trả về số phần tử
-int SLinkedList::size() const {
-    
-    return count;
-}
-
-// Xóa toàn bộ danh sách
-void SLinkedList::clear() {
-    
-    Node *cur = head;
-    while (cur != nullptr){
-        Node *temp = cur;
-        cur = cur->next;
-        delete temp;
-    }
-    head = nullptr;
-    tail = nullptr;
-    count = 0;
-}
-
-// Lấy phần tử tại index
-int& SLinkedList::get(int index) {
-    : nếu index không hợp lệ -> throw out_of_range("Index is invalid!")
-    if (index < 0 || index > count - 1){
-        throw out_of_range("Index is invalid!");
-    }
-    Node *cur = head;
-    for (int i = 0; i < index; i++){
-        cur = cur->next;
-    }
-    return cur->data;
-}
-
-// Trả về chỉ số đầu tiên của item
-int SLinkedList::indexOf(int item) const {
-    
-    int indexof = 0;
-    Node *cur = head;
-    for (int i = 0; i < count; i++){
-        if (cur->data == item) return indexof;
-        cur = cur->next;
-        indexof++;
-    }
-    return -1;
-}
-
-// Kiểm tra chứa item
-bool SLinkedList::contains(int item) const {
-    
-    Node *cur = head;
-    for (int i = 0; i < count; i++){
-        if (cur->data == item) return true;
-        cur = cur->next;
-    }
-    return false;
-}
-
-// Trả về chuỗi biểu diễn
-string SLinkedList::toString() const {
-    : dạng [1]->[2]->[3]...
-    Node *cur = head;
-    string result;
-    for (int i = 0; i < count; i++){
-        result += "[" + to_string(cur->data) + "]";
-        if (cur->next != nullptr){
-            result += "->";
-        }
-        // (cur->next == nullptr) break;
-        cur = cur->next;
-    }
-    return result;
-}
-
-// ====== Các hàm thao tác bổ sung ======
-
-// Trả về phần tử đầu
-int& SLinkedList::front() {
-    
-    if (count == 0) throw out_of_range("Empty List!");
-    return head->data;
-}
-
-// Trả về phần tử cuối
-int& SLinkedList::back() {
-    
-    if (count == 0) throw out_of_range("Empty List!");
-    return head->data;
-}
-
-// Thay đổi giá trị tại vị trí index
-void SLinkedList::set(int index, int e) {
-    
-    Node *cur = head;
-    for (int i = 0; i < index; i++){
-        cur = cur->next;
-    }
-    cur->data = e;
-}
-
-// Xoá và trả về phần tử đầu
-int SLinkedList::pop_front() {
-    
-    
-}
-
-// Xoá và trả về phần tử cuối
-int SLinkedList::pop_back() {
-    
-}
-
-// Đảo ngược danh sách
-void SLinkedList::reverse() {
-    
-}
-
-// Xoay danh sách sang trái k bước
-void SLinkedList::rotate(int k) {
-    
-}
-
-// Trả về phần tử giữa danh sách
-int SLinkedList::findMiddle() const {
-    
-    return -1;
-}
-
-// Trả về phần tử cách cuối n bước
-int SLinkedList::nthFromEnd(int n) const {
-    
-    return -1;
-}
-
-// Nối một danh sách khác vào cuối
-void SLinkedList::merge(SLinkedList& other) {
-    
-}
-
-// Tách danh sách thành 2 phần tại vị trí index
-SLinkedList SLinkedList::split(int index) {
-    
-}
-
-// Kiểm tra danh sách có vòng lặp hay không
-bool SLinkedList::hasCycle() const {
-    
-}
-
-// ===== Thuật toán sắp xếp cho DSLK đơn =====
-
-// Sắp xếp bằng Bubble Sort
-void SLinkedList::bubbleSort() {
-    
-}
-
-// Sắp xếp bằng Insertion Sort
-void SLinkedList::insertionSort() {
-    
-}
-
-// Sắp xếp bằng Selection Sort
-void SLinkedList::selectionSort() {
-    
-}
-
-// Sắp xếp bằng Merge Sort (tốt nhất)
-void SLinkedList::mergeSort() {
-    
-}
-
-
-// ================= Iterator ================= //
-
-// Constructor
-SLinkedList::Iterator::Iterator(Node* node) {
-    //! ➡ Khi bạn tạo iterator, bạn truyền vào một con trỏ Node*. Iterator sẽ giữ nó để biết đang "trỏ" vào đâu.
-    current = node;
-}
-
-// Toán tử gán
-SLinkedList::Iterator& SLinkedList::Iterator::operator=(const Iterator& other) {
-     
-    //! ➡ Cho phép gán một iterator sang iterator khác (ví dụ: it1 = it2;).
-    if (this != &other) current = other.current;
-    return *this;
-}
-
-// Dereference
-int& SLinkedList::Iterator::operator*() {
-    : nếu current == nullptr -> throw out_of_range("Iterator is out of range!")
-    //! ➡ Dùng để lấy giá trị node hiện tại. Iterator giống như con trỏ nên *it chính là data.
-    if (current == nullptr) throw out_of_range("Iterator is out of range!");
-    return current->data;
-}
-
-// So sánh khác nhau
-bool SLinkedList::Iterator::operator!=(const Iterator& other) const {
-    
-    //! so sánh current != other.current
-    return current != other.current;
-}
-
-// Tiến (tiền tố ++it)
-SLinkedList::Iterator& SLinkedList::Iterator::operator++() {
-    : nếu current == nullptr -> throw out_of_range("Iterator cannot advance past end!")
-    //! ➡ Cho iterator nhảy tới node tiếp theo trong danh sách.
-    if (current == nullptr) {
-        throw out_of_range("Iterator cannot advance past end!");
-    }
-    current = current->next;
-    return *this;
-}
-
-// Tiến (hậu tố it++)
-SLinkedList::Iterator SLinkedList::Iterator::operator++(int) {
-    : lưu bản sao, tăng current, trả về bản sao
-    if (current == nullptr) {
-        throw out_of_range("Iterator cannot advance past end!");
-    }
-    Iterator old = *this;
-    current = current->next;
-    return old;
-}
-
-// ================= begin() / end() ================= //
-
-SLinkedList::Iterator SLinkedList::begin() {
-    : trả về iterator trỏ vào head
-    return Iterator(head);
-}
-
-SLinkedList::Iterator SLinkedList::end() {
-    : trả về iterator trỏ nullptr
-    return Iterator(nullptr);
-}
-*/
