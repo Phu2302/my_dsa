@@ -3,31 +3,29 @@
 
 #include "interfaces/IList.h"
 
-// ================= Node ================= //
-template <class T>
-class Node {
-public:
-    T data;        // dữ liệu
-    Node* next;    // con trỏ trỏ đến nút kế tiếp
-
-    Node(const T& val, Node* nxt = nullptr)
-        : data(val), next(nxt) {}
-};
-
 // ================= SLinkedList ================= //
 template <class T>
 class SLinkedList : public IList<T> {
 private:
-    Node<T>* head;   // nút đầu
-    Node<T>* tail;   // nút cuối
-    int count;       // số lượng phần tử
+    // ================= Node (Nested Class) ================= //
+    class Node {
+    public:
+        T data;      // dữ liệu
+        Node* next;  // con trỏ tới nút tiếp theo
+
+        Node(const T& val, Node* nxt = nullptr);
+    };
+
+    Node* head;  // nút đầu
+    Node* tail;  // nút cuối
+    int count;   // số lượng phần tử
 
 public:
     // ===== Constructor & Destructor =====
-    SLinkedList();
-    SLinkedList(const SLinkedList<T>& other);
-    ~SLinkedList();
-    SLinkedList<T>& operator=(const SLinkedList<T>& other);
+    SLinkedList();  // constructor
+    SLinkedList(const SLinkedList<T>& other);  // constructor sao chép
+    ~SLinkedList();  // destructor
+    SLinkedList<T>& operator=(const SLinkedList<T>& other);  // toán tử gán
 
     // ===== Các hàm thao tác (theo IList) =====
     void add(const T& e) override;              // thêm cuối
@@ -51,9 +49,9 @@ public:
     // ===== Iterator =====
     class Iterator {
     private:
-        Node<T>* current;   // con trỏ nút hiện tại
+        Node* current;   // con trỏ tới node hiện tại
     public:
-        Iterator(Node<T>* node = nullptr);
+        Iterator(Node* node = nullptr);
 
         Iterator& operator=(const Iterator& other);
         T& operator*();                       // truy cập data

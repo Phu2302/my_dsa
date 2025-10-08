@@ -22,7 +22,7 @@ This project is part of my learning journey to master data structures and algori
 my_dsa/
 │
 ├── include/
-│   ├── lib.h
+│   ├── lib.h                # Library and using namespace std;
 │   ├── interfaces/          # Interface/ADT
 │   │   ├── IList.h
 │   │   ├── IStack.h
@@ -79,7 +79,7 @@ my_dsa/
 │   └── GraphAlgos.cpp
 │
 ├── tests/
-│   ├── main.cpp               # Test runner (menu selection)
+│   ├── main.cpp               # Test runner
 │   ├── test_array.cpp
 │   ├── linked_list/
 │   │   └── test_slinkedlist.cpp
@@ -91,9 +91,12 @@ my_dsa/
 │   └── test_sorting.cpp
 │
 ├── CMakeLists.txt
+├── LICENSE
 └── README.md
 ```
 </details>
+
+---
 
 ## 🧱 Build & Run Instructions  
 
@@ -101,28 +104,39 @@ my_dsa/
 
 ⚙️ **Initial configuration** (run once to set up CMake):
 
+```bash
 cmake -S . -B build_win -G "MinGW Makefiles"
+```
 
 🔨 **Rebuild after code changes** (every time you modify or add tests):
 
+```bash
 cmake --build build_win
+```
 
 🚀 **Run the program:**
 
+```bash
 build_win\main.exe
+```
 
 ---
-
 ### 🍎 macOS / Linux
 
 ⚙️ **Initial configuration:**
 
+```bash
 cmake -S . -B build_mac
+```
 
 🔨 **Rebuild after code changes:**
 
+```bash
 cmake --build build_mac
+```
 
 🚀 **Run the program:**
 
+```bash
 ./build_mac/main
+```
