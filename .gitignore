@@ -1,5 +1,7 @@
 # Build folders
 /build/
+/build_win/
+/build_mac/
 bin/
 out/
 

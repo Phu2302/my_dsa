@@ -9,12 +9,12 @@ void ArrayList<T>::ensureCapacity(int cap) {
     // TODO
     if (cap < capacity) return;
     int newCapacity;
-    if (capcity == 0) newCapacity = 10;
+    if (capacity == 0) newCapacity = 10;
     else newCapacity = capacity * 3/2;
 
-    T newArr = new T[capacity];
+    T *newArr = new T[capacity];
     for (int i = 0; i < count; i++){
-        newCapacity[i] = capacity[i];
+        newArr[i] = arr[i];
     }
     delete[] arr;
     arr = newArr;
@@ -96,7 +96,7 @@ void ArrayList<T>::add(int index, const T& e) {
 template<class T>
 T ArrayList<T>::removeAt(int index) {
     // TODO
-    if (index < 0 || index >= count) thorw out_of_range("Index is invalid");
+    if (index < 0 || index >= count) throw out_of_range("Index is invalid");
     T removed = arr[index];
     
     for (int i = index; i < count-1; i++){
@@ -111,7 +111,7 @@ template<class T>
 bool ArrayList<T>::removeItem(const T& item) {
     // TODO
     for (int i = 0; i < count; i++){
-        if (arr[i] == arr[item]){
+        if (arr[i] == item){
             removeAt(i);
             return true;
         }
@@ -220,13 +220,14 @@ T ArrayList<T>::pop_back() {
 template<class T>
 string ArrayList<T>::toString() const {
     // TODO
-    string re = "[";
-    for (int i = 0; i < count; i++){
-        re += to_string(arr[i]);
-        if (i < count-1) re += ", ";
+    ostringstream oss;
+    oss << "[";
+    for (int i = 0; i < count; i++) {
+        oss << arr[i];
+        if (i < count - 1) oss << ", ";
     }
-    re += "]";
-    return re;
+    oss << "]";
+    return oss.str();
 }
 
 // ======================= ITERATOR =======================
@@ -262,6 +263,8 @@ ArrayList<T>::Iterator::operator=(const Iterator& other) {
 template<class T>
 T& ArrayList<T>::Iterator::operator*() {
     // TODO
+    if (pList == nullptr) throw out_of_range("Iterator is null");
+    if (cursor < 0 || cursor >= pList->count) throw out_of_range("Iterator is out of range");
     return pList->arr[cursor];
 }
 

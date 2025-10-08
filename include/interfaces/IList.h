@@ -1,6 +1,6 @@
 #ifndef ILIST_H
 #define ILIST_H
-#include "lib"
+#include "lib.h"
 
 /*
  * Interface: IList<T>

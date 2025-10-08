@@ -1,6 +1,6 @@
 #ifndef ISTACK_H
 #define ISTACK_H
-#include "lib"
+#include "lib.h"
 
 /*
  * Interface: IStack<T>

@@ -7,6 +7,7 @@
 #include <stdexcept>
 #include <cmath>
 #include <cstdlib>
+#include <typeinfo>
 
 using namespace std;
 

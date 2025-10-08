@@ -79,8 +79,10 @@ my_dsa/
 │   └── GraphAlgos.cpp
 │
 ├── tests/
+│   ├── main.cpp               # Test runner (menu selection)
 │   ├── test_array.cpp
-│   ├── test_linked_list.cpp
+│   ├── linked_list/
+│   │   └── test_slinkedlist.cpp
 │   ├── test_queue.cpp
 │   ├── test_stack.cpp
 │   ├── test_hash.cpp
@@ -90,3 +92,36 @@ my_dsa/
 │
 ├── CMakeLists.txt
 └── README.md
+</details>
+
+## 🧱 Build & Run Instructions  
+
+### 🪟 Windows (MinGW / VSCode Terminal)
+
+⚙️ **Initial configuration** (run once to set up CMake):
+
+cmake -S . -B build_win -G "MinGW Makefiles"
+
+🔨 **Rebuild after code changes** (every time you modify or add tests):
+
+cmake --build build_win
+
+🚀 **Run the program:**
+
+build_win\main.exe
+
+---
+
+### 🍎 macOS / Linux
+
+⚙️ **Initial configuration:**
+
+cmake -S . -B build_mac
+
+🔨 **Rebuild after code changes:**
+
+cmake --build build_mac
+
+🚀 **Run the program:**
+
+./build_mac/main

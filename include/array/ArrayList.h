@@ -67,3 +67,5 @@ public:
     Iterator begin();
     Iterator end();
 };
+
+#endif // ARRAYLIST_H

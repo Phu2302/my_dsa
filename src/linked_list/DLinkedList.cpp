@@ -1,5 +1,5 @@
 #include "linked_list/DLinkedList.h"
-#include "include/lib"
+#include "lib.h"
 
 // ======================= CONSTRUCTOR / DESTRUCTOR =======================
 

@@ -66,3 +66,5 @@ public:
     Iterator begin();    // iterator trỏ tới head
     Iterator end();      // iterator null (sau tail)
 };
+
+#endif // SLINKEDLIST_H
