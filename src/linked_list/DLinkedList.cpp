@@ -6,25 +6,49 @@
 // Khởi tạo danh sách rỗng
 template<class T>
 DLinkedList<T>::DLinkedList() {
-    // TODO
+    // Time complexity: O(1)
+    head = nullptr;
+    tail = nullptr;
+    count = 0;
 }
 
 // Constructor sao chép
 template<class T>
 DLinkedList<T>::DLinkedList(const DLinkedList<T>& other) {
-    // TODO
+    // Time complexity: O(n)
+    Node *curOther = other.head;
+    while (curOther != nullptr){
+        Node *newNode = new Node(curOther->data, nullptr, nullptr);
+        if (head == nullptr){
+            head = newNode;
+            tail = newNode;
+        }
+        else {
+            tail->next = newNode;
+            newNode->prev = tail;
+            tail = newNode;
+        }
+        count++;
+        curOther = curOther->next;
+    }
 }
 
 // Destructor: giải phóng toàn bộ bộ nhớ
 template<class T>
 DLinkedList<T>::~DLinkedList() {
-    // TODO
+    // Time complexity: O(n)
+    Node *cur = head;
+    while (cur != nullptr){
+        Node *del = cur;
+        cur = cur->next;
+        delete del;
+    }
 }
 
 // Toán tử gán
 template<class T>
 DLinkedList<T>& DLinkedList<T>::operator=(const DLinkedList<T>& other) {
-    // TODO
+    // Time complexity:
     return *this;
 }
 
@@ -33,53 +57,53 @@ DLinkedList<T>& DLinkedList<T>::operator=(const DLinkedList<T>& other) {
 // Thêm phần tử vào cuối danh sách
 template<class T>
 void DLinkedList<T>::add(const T& e) {
-    // TODO
+    // Time complexity:
 }
 
 // Thêm phần tử tại vị trí index
 template<class T>
 void DLinkedList<T>::add(int index, const T& e) {
-    // TODO
+    // Time complexity:
 }
 
 // Xóa phần tử tại vị trí index, trả về phần tử đã xóa
 template<class T>
 T DLinkedList<T>::removeAt(int index) {
-    // TODO
+    // Time complexity:
     return T{};
 }
 
 // Xóa phần tử có giá trị item (nếu tồn tại)
 template<class T>
 bool DLinkedList<T>::removeItem(const T& item) {
-    // TODO
+    // Time complexity:
     return false;
 }
 
 // Kiểm tra danh sách có rỗng hay không
 template<class T>
 bool DLinkedList<T>::empty() const {
-    // TODO
+    // Time complexity:
     return true;
 }
 
 // Trả về số lượng phần tử trong danh sách
 template<class T>
 int DLinkedList<T>::size() const {
-    // TODO
+    // Time complexity:
     return 0;
 }
 
 // Xóa toàn bộ danh sách
 template<class T>
 void DLinkedList<T>::clear() {
-    // TODO
+    // Time complexity:
 }
 
 // Lấy phần tử tại vị trí index
 template<class T>
 T& DLinkedList<T>::get(int index) {
-    // TODO
+    // Time complexity:
     static T temp{};
     return temp;
 }
@@ -87,27 +111,27 @@ T& DLinkedList<T>::get(int index) {
 // Gán giá trị mới cho phần tử tại vị trí index
 template<class T>
 void DLinkedList<T>::set(int index, const T& e) {
-    // TODO
+    // Time complexity:
 }
 
 // Trả về vị trí đầu tiên của phần tử item (hoặc -1 nếu không có)
 template<class T>
 int DLinkedList<T>::indexOf(const T& item) const {
-    // TODO
+    // Time complexity:
     return -1;
 }
 
 // Kiểm tra danh sách có chứa phần tử item không
 template<class T>
 bool DLinkedList<T>::contains(const T& item) const {
-    // TODO
+    // Time complexity:
     return false;
 }
 
 // Trả về phần tử đầu tiên của danh sách
 template<class T>
 T& DLinkedList<T>::front() {
-    // TODO
+    // Time complexity:
     static T temp{};
     return temp;
 }
@@ -115,7 +139,7 @@ T& DLinkedList<T>::front() {
 // Trả về phần tử cuối cùng của danh sách
 template<class T>
 T& DLinkedList<T>::back() {
-    // TODO
+    // Time complexity:
     static T temp{};
     return temp;
 }
@@ -123,21 +147,21 @@ T& DLinkedList<T>::back() {
 // Xóa và trả về phần tử đầu tiên của danh sách
 template<class T>
 T DLinkedList<T>::pop_front() {
-    // TODO
+    // Time complexity:
     return T{};
 }
 
 // Xóa và trả về phần tử cuối cùng của danh sách
 template<class T>
 T DLinkedList<T>::pop_back() {
-    // TODO
+    // Time complexity:
     return T{};
 }
 
 // Trả về chuỗi biểu diễn danh sách (ví dụ: [1, 2, 3])
 template<class T>
 string DLinkedList<T>::toString() const {
-    // TODO
+    // Time complexity:
     return "[]";
 }
 
@@ -147,21 +171,21 @@ string DLinkedList<T>::toString() const {
 template<class T>
 DLinkedList<T>::Iterator::Iterator(Node* node)
     : current(node) {
-    // TODO
+    // Time complexity:
 }
 
 // Toán tử gán
 template<class T>
 typename DLinkedList<T>::Iterator&
 DLinkedList<T>::Iterator::operator=(const Iterator& other) {
-    // TODO
+    // Time complexity:
     return *this;
 }
 
 // Truy cập phần tử hiện tại
 template<class T>
 T& DLinkedList<T>::Iterator::operator*() {
-    // TODO
+    // Time complexity:
     static T temp{};
     return temp;
 }
@@ -169,14 +193,14 @@ T& DLinkedList<T>::Iterator::operator*() {
 // So sánh iterator khác nhau
 template<class T>
 bool DLinkedList<T>::Iterator::operator!=(const Iterator& other) const {
-    // TODO
+    // Time complexity:
     return true;
 }
 
 // So sánh iterator bằng nhau
 template<class T>
 bool DLinkedList<T>::Iterator::operator==(const Iterator& other) const {
-    // TODO
+    // Time complexity:
     return false;
 }
 
@@ -184,7 +208,7 @@ bool DLinkedList<T>::Iterator::operator==(const Iterator& other) const {
 template<class T>
 typename DLinkedList<T>::Iterator&
 DLinkedList<T>::Iterator::operator++() {
-    // TODO
+    // Time complexity:
     return *this;
 }
 
@@ -192,7 +216,7 @@ DLinkedList<T>::Iterator::operator++() {
 template<class T>
 typename DLinkedList<T>::Iterator
 DLinkedList<T>::Iterator::operator++(int) {
-    // TODO
+    // Time complexity:
     return *this;
 }
 
@@ -200,7 +224,7 @@ DLinkedList<T>::Iterator::operator++(int) {
 template<class T>
 typename DLinkedList<T>::Iterator&
 DLinkedList<T>::Iterator::operator--() {
-    // TODO
+    // Time complexity:
     return *this;
 }
 
@@ -208,35 +232,35 @@ DLinkedList<T>::Iterator::operator--() {
 template<class T>
 typename DLinkedList<T>::Iterator
 DLinkedList<T>::Iterator::operator--(int) {
-    // TODO
+    // Time complexity:
     return *this;
 }
 
 // Trả về iterator đầu danh sách
 template<class T>
 typename DLinkedList<T>::Iterator DLinkedList<T>::begin() {
-    // TODO
+    // Time complexity:
     return Iterator(head);
 }
 
 // Trả về iterator sau phần tử cuối cùng
 template<class T>
 typename DLinkedList<T>::Iterator DLinkedList<T>::end() {
-    // TODO
+    // Time complexity:
     return Iterator(nullptr);
 }
 
 // Trả về iterator trỏ tới tail (duyệt ngược)
 template<class T>
 typename DLinkedList<T>::Iterator DLinkedList<T>::rbegin() {
-    // TODO
+    // Time complexity:
     return Iterator(tail);
 }
 
 // Trả về iterator "trước head" (duyệt ngược)
 template<class T>
 typename DLinkedList<T>::Iterator DLinkedList<T>::rend() {
-    // TODO
+    // Time complexity:
     return Iterator(nullptr);
 }
 

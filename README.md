@@ -98,6 +98,13 @@ my_dsa/
 
 ---
 
+## 🖥️ Requirements
+
+- **C++ Compiler**: C++17 or later (e.g., GCC, Clang, MSVC)
+- **CMake**: Version 3.10 or higher
+
+---
+
 ## 🧱 Build & Run Instructions  
 
 ### 🪟 Windows (MinGW / VSCode Terminal)

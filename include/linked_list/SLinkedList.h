@@ -7,7 +7,6 @@
 template <class T>
 class SLinkedList : public IList<T> {
 private:
-    // ================= Node (Nested Class) ================= //
     class Node {
     public:
         T data;      // dữ liệu
