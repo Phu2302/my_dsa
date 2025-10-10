@@ -22,8 +22,8 @@ This project is part of my learning journey to master data structures and algori
 my_dsa/
 │
 ├── include/
-│   ├── lib.h                # Library and using namespace std;
-│   ├── interfaces/          # Interface/ADT
+│   ├── lib.h
+│   ├── interfaces/
 │   │   ├── IList.h
 │   │   ├── IStack.h
 │   │   ├── IQueue.h
@@ -58,41 +58,56 @@ my_dsa/
 │       └── AdjMatrixGraph.h
 │
 ├── src/
-│   ├── array/ArrayList.cpp
-│   ├── linked_list/SLinkedList.cpp
-│   ├── linked_list/DLinkedList.cpp
-│   ├── queue/Queue.cpp
-│   ├── queue/Deque.cpp
-│   ├── stack/Stack.cpp
-│   ├── hash/Chaining.cpp
-│   ├── hash/OpenAddressing.cpp
-│   ├── tree/BST.cpp
-│   ├── tree/AVL.cpp
-│   ├── tree/Heap.cpp
-│   └── graph/AdjListGraph.cpp
-│
-├── algorithms/
-│   ├── Sorting.h
-│   ├── Sorting.cpp
-│   ├── Searching.h
-│   ├── Searching.cpp
-│   └── GraphAlgos.cpp
+│   ├── data_structures/
+│   │   ├── array/
+│   │   │   └── ArrayList.cpp
+│   │   ├── linked_list/
+│   │   │   ├── SLinkedList.cpp
+│   │   │   └── DLinkedList.cpp
+│   │   ├── queue/
+│   │   │   ├── Queue.cpp
+│   │   │   └── Deque.cpp
+│   │   ├── stack/
+│   │   │   └── Stack.cpp
+│   │   ├── hash/
+│   │   │   ├── Chaining.cpp
+│   │   │   └── OpenAddressing.cpp
+│   │   ├── heap/
+│   │   │   └── Heap.cpp
+│   │   ├── tree/
+│   │   │   ├── BST.cpp
+│   │   │   └── AVL.cpp
+│   │   └── graph/
+│   │       ├── AdjListGraph.cpp
+│   │       └── AdjMatrixGraph.cpp
+│   │
+│   └── algorithms/             
+│       ├── linear.cpp           # Two Pointers, Sliding Window, Fast/Slow
+│       ├── searching.cpp        # Binary Search, Modified Binary Search
+│       ├── sorting.cpp          # QuickSort, MergeSort, HeapSort
+│       ├── recursion.cpp        # Factorial, Fibonacci, Hanoi
+│       ├── backtracking.cpp     # Subset, N-Queens, Sudoku
+│       ├── tree.cpp             # Binary Tree DFS/BFS, LCA, Height
+│       ├── graph.cpp            # Topological Sort, BFS, DFS, Dijkstra
+│       ├── heap.cpp             # Top K Elements, Heapify, BuildHeap
+│       └── utility.cpp          # print, swap, timer, helpers
 │
 ├── tests/
-│   ├── main.cpp               # Test runner
+│   ├── main.cpp
 │   ├── test_array.cpp
-│   ├── linked_list/
-│   │   └── test_slinkedlist.cpp
-│   ├── test_queue.cpp
+│   ├── test_linkedlist.cpp
 │   ├── test_stack.cpp
+│   ├── test_queue.cpp
 │   ├── test_hash.cpp
 │   ├── test_tree.cpp
 │   ├── test_graph.cpp
-│   └── test_sorting.cpp
+│   ├── test_sorting.cpp
+│   └── test_algorithms.cpp
 │
 ├── CMakeLists.txt
 ├── LICENSE
 └── README.md
+
 ```
 </details>
 

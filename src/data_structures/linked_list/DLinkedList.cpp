@@ -49,6 +49,7 @@ DLinkedList<T>::~DLinkedList() {
 template<class T>
 DLinkedList<T>& DLinkedList<T>::operator=(const DLinkedList<T>& other) {
     // Time complexity:
+    
     return *this;
 }
 
@@ -57,112 +58,277 @@ DLinkedList<T>& DLinkedList<T>::operator=(const DLinkedList<T>& other) {
 // Thêm phần tử vào cuối danh sách
 template<class T>
 void DLinkedList<T>::add(const T& e) {
-    // Time complexity:
+    // Time complexity: O(1)
+    Node *newNode = new Node(e, nullptr, nullptr);
+    if (count == 0){
+        head = newNode;
+        tail = newNode;
+        count++;
+        return;
+    }
+    tail->next = newNode;
+    newNode->prev = tail;
+    tail = newNode;
+    count++;
 }
 
 // Thêm phần tử tại vị trí index
 template<class T>
 void DLinkedList<T>::add(int index, const T& e) {
-    // Time complexity:
+    // Time complexity: O(n)
+    if (index < 0 || index > count) throw out_of_range("Index is invalid!");
+    Node *newNode = new Node(e, nullptr, nullptr);
+    if (count == 0){
+        head = newNode;
+        tail = newNode;
+        count++;
+        return;
+    }
+
+    if (index == 0){
+        newNode->next = head;
+        head->prev = newNode;
+        head = newNode;
+        count++;
+        return;
+    }
+
+    if (index == count){
+        tail->next = newNode;
+        newNode->prev = tail;
+        tail = newNode;
+        count++;
+        return;
+    }
+    Node *cur = head;
+    for (int i = 0; i < index - 1; i++){
+        cur = cur->next;
+    }
+    newNode->next = cur->next;
+    cur->next->prev = newNode;
+    newNode->prev = cur;
+    cur->next = newNode;
 }
 
 // Xóa phần tử tại vị trí index, trả về phần tử đã xóa
 template<class T>
 T DLinkedList<T>::removeAt(int index) {
-    // Time complexity:
-    return T{};
+    // Time complexity: O(n)
+    if (index < 0 || index >= count) throw out_of_range("Index is invalid!");
+    if (count == 0) throw out_of_range("Empty List!");
+    
+    if (count == 1){
+        Node *del = head;
+        T val = del->data;
+        head = nullptr;
+        tail = nullptr;
+        delete del;
+        count--;
+        return val;
+    }
+
+    if (index == count-1){
+        Node *del = tail;
+        T val = del->data;
+        tail->prev->next = nullptr;
+        tail = tail->prev;
+        delete del;
+        count--;
+        return val;
+    }
+    Node *cur = head;
+    for (int i = 0; i < index-1; i++){
+        cur = cur->next;
+    }
+    Node *del = cur->next;
+    T val = del->data;
+    cur->next = del->next;
+    del->next->prev = del->prev;
+    delete del;
+    count--;
+    return val;
 }
 
 // Xóa phần tử có giá trị item (nếu tồn tại)
 template<class T>
 bool DLinkedList<T>::removeItem(const T& item) {
-    // Time complexity:
+    // Time complexity: O(n)
+    if (count == 0) throw out_of_range("Empty List!");
+    Node *cur = head;
+    int idx = 0;
+    while (cur != nullptr){
+        if (cur->data == item){
+            DLinkedList::removeAt(idx); 
+            return true;
+        }
+        idx++;
+        cur = cur->next;
+    }
     return false;
 }
 
 // Kiểm tra danh sách có rỗng hay không
 template<class T>
 bool DLinkedList<T>::empty() const {
-    // Time complexity:
-    return true;
+    // Time complexity: O(1)
+    if (count == 0) return true;
+    return false;
 }
 
 // Trả về số lượng phần tử trong danh sách
 template<class T>
 int DLinkedList<T>::size() const {
-    // Time complexity:
-    return 0;
+    // Time complexity: O(1)
+    return count;
 }
 
 // Xóa toàn bộ danh sách
 template<class T>
 void DLinkedList<T>::clear() {
-    // Time complexity:
+    // Time complexity: O(n)
+    Node *cur = head;
+    while (cur != nullptr){
+        Node *del = cur;
+        cur = cur->next;
+        delete del;
+    }
+    head = nullptr;
+    tail = nullptr;
+    count = 0;
 }
 
 // Lấy phần tử tại vị trí index
 template<class T>
 T& DLinkedList<T>::get(int index) {
-    // Time complexity:
-    static T temp{};
-    return temp;
+    // Time complexity: O(n)
+    if (index < 0 || index >= count) throw out_of_range("Index is invalid!");
+    if (count == 0) throw out_of_range("Empty List!");
+    Node *cur = head;
+    for (int i = 0; i < index; i++){
+        cur = cur->next;
+    }
+    return cur->data;
 }
 
 // Gán giá trị mới cho phần tử tại vị trí index
 template<class T>
 void DLinkedList<T>::set(int index, const T& e) {
-    // Time complexity:
+    // Time complexity: O(n)
+    if (index < 0 || index >= count) throw out_of_range("Index is invalid!");
+    if (count == 0) throw out_of_range("Empty List!");
+    Node *cur = head;
+    for (int i = 0; i < index; i++){
+        cur = cur->next;
+    }
+    cur->data = e;
 }
 
 // Trả về vị trí đầu tiên của phần tử item (hoặc -1 nếu không có)
 template<class T>
 int DLinkedList<T>::indexOf(const T& item) const {
-    // Time complexity:
+    // Time complexity: O(n)
+    if (count == 0) throw out_of_range("Empty List!");
+    Node *cur = head;
+    int idx = 0;
+    while (cur != nullptr){
+        if (cur->data == item) return idx;
+        idx++;
+        cur = cur->next;
+    }
     return -1;
 }
 
 // Kiểm tra danh sách có chứa phần tử item không
 template<class T>
 bool DLinkedList<T>::contains(const T& item) const {
-    // Time complexity:
+    // Time complexity: O(n)
+    if (count == 0) throw out_of_range("Empty List!");
+    Node *cur = head;
+    while (cur != nullptr){
+        if (cur->data == item) return true;
+        cur = cur->next;
+    }
     return false;
 }
 
 // Trả về phần tử đầu tiên của danh sách
 template<class T>
 T& DLinkedList<T>::front() {
-    // Time complexity:
-    static T temp{};
-    return temp;
+    // Time complexity: 0(1)
+    if (count == 0) throw out_of_range("Empty List!");
+    return head->data;
 }
 
 // Trả về phần tử cuối cùng của danh sách
 template<class T>
 T& DLinkedList<T>::back() {
-    // Time complexity:
-    static T temp{};
-    return temp;
+    // Time complexity: O(1)
+    if (count == 0) throw out_of_range("Empty List!");
+    return tail->data;
 }
 
 // Xóa và trả về phần tử đầu tiên của danh sách
 template<class T>
 T DLinkedList<T>::pop_front() {
-    // Time complexity:
-    return T{};
+    // Time complexity: O(1)
+    if (count == 0) throw out_of_range("Empty List!");
+    if (count == 1){
+        Node *del = head;
+        T val = del->data;
+        head = nullptr;
+        tail = nullptr;
+        delete del;
+        count--;
+        return val;
+    }
+    Node *del = head;
+    T val = del->data;
+    head = head->next;
+    head->prev = nullptr;
+    delete del;
+    count--;
+    return val;
 }
 
 // Xóa và trả về phần tử cuối cùng của danh sách
 template<class T>
 T DLinkedList<T>::pop_back() {
-    // Time complexity:
-    return T{};
+    // Time complexity: O(1)
+    if (count == 0) throw out_of_range("Empty List!");
+    if (count == 1){
+        Node *del = tail;
+        T val = del->data;
+        head = nullptr;
+        tail = nullptr;
+        delete del;
+        count--;
+        return val;
+    }
+    Node *del = tail;
+    T val = del->data;
+    tail->prev->next = nullptr;
+    tail = tail->prev;
+    delete del;
+    count--;
+    return val;
 }
 
 // Trả về chuỗi biểu diễn danh sách (ví dụ: [1, 2, 3])
 template<class T>
 string DLinkedList<T>::toString() const {
-    // Time complexity:
-    return "[]";
+    // Time complexity: O(n)
+    if (count == 0) return "[]";
+
+    ostringstream re;
+    re << "[";
+    Node *cur = head;
+    while (cur != nullptr){
+        re << cur->data;
+        if (cur->next != nullptr) re << ", ";
+        cur = cur->next;
+    }
+    re << "]";
+    return re.str();
 }
 
 // ======================= ITERATOR =======================
