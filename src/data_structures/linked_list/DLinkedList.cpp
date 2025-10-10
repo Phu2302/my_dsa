@@ -335,9 +335,9 @@ string DLinkedList<T>::toString() const {
 
 // Khởi tạo iterator tại node cho trước
 template<class T>
-DLinkedList<T>::Iterator::Iterator(Node* node)
-    : current(node) {
-    // Time complexity:
+DLinkedList<T>::Iterator::Iterator(Node* node) {
+    // Time complexity: O(1)
+    current = node;
 }
 
 // Toán tử gán
@@ -345,6 +345,7 @@ template<class T>
 typename DLinkedList<T>::Iterator&
 DLinkedList<T>::Iterator::operator=(const Iterator& other) {
     // Time complexity:
+    current = other.current;
     return *this;
 }
 
@@ -352,21 +353,23 @@ DLinkedList<T>::Iterator::operator=(const Iterator& other) {
 template<class T>
 T& DLinkedList<T>::Iterator::operator*() {
     // Time complexity:
-    static T temp{};
-    return temp;
+    if (current == nullptr) throw out_of_range("Not valid");
+    return current->data;
 }
 
 // So sánh iterator khác nhau
 template<class T>
 bool DLinkedList<T>::Iterator::operator!=(const Iterator& other) const {
     // Time complexity:
-    return true;
+    if (current != other.current) return true;
+    return false;
 }
 
 // So sánh iterator bằng nhau
 template<class T>
 bool DLinkedList<T>::Iterator::operator==(const Iterator& other) const {
     // Time complexity:
+    if (current == other.current) return true;
     return false;
 }
 
@@ -375,6 +378,8 @@ template<class T>
 typename DLinkedList<T>::Iterator&
 DLinkedList<T>::Iterator::operator++() {
     // Time complexity:
+    if (current == nullptr) throw out_of_range("Not valid");
+    current = current->next;
     return *this;
 }
 
@@ -383,7 +388,10 @@ template<class T>
 typename DLinkedList<T>::Iterator
 DLinkedList<T>::Iterator::operator++(int) {
     // Time complexity:
-    return *this;
+    if (current == nullptr) throw out_of_range("Not valid");
+    Iterator = old = *this;
+    current = current->next;
+    return old;
 }
 
 // Lùi tiền tố --it
@@ -391,6 +399,8 @@ template<class T>
 typename DLinkedList<T>::Iterator&
 DLinkedList<T>::Iterator::operator--() {
     // Time complexity:
+    if (current == nullptr) throw out_of_range("Not valid");
+    current = current->prev;
     return *this;
 }
 
@@ -399,7 +409,10 @@ template<class T>
 typename DLinkedList<T>::Iterator
 DLinkedList<T>::Iterator::operator--(int) {
     // Time complexity:
-    return *this;
+    if (current == nullptr) throw out_of_range("Not valid");
+    Iterator old = *this;
+    current = current->prev;
+    return old;
 }
 
 // Trả về iterator đầu danh sách
