@@ -381,6 +381,13 @@ T& SLinkedList<T>::Iterator::operator*() {
     return current->data;
 }
 
+template<class T>
+const T& SLinkedList<T>::Iterator::operator*() const {
+    // Time complexity: O(1)
+    return current->data;
+}
+
+
 // So sánh iterator khác nhau
 template<class T>
 bool SLinkedList<T>::Iterator::operator!=(const Iterator& other) const {
@@ -427,6 +434,17 @@ typename SLinkedList<T>::Iterator SLinkedList<T>::end() {
     
     return Iterator(nullptr);
 }
+
+template<class T>
+typename SLinkedList<T>::Iterator SLinkedList<T>::begin() const {
+    return Iterator(head);
+}
+
+template<class T>
+typename SLinkedList<T>::Iterator SLinkedList<T>::end() const {
+    return Iterator(nullptr);
+}
+
 
 // ======================= EXPLICIT INSTANTIATION =======================
 template class SLinkedList<int>;

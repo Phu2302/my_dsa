@@ -152,6 +152,13 @@ T& ArrayList<T>::get(int index) {
     return arr[index];
 }
 
+template<class T>
+const T& ArrayList<T>::get(int index) const {
+    if (index < 0 || index >= count) throw out_of_range("Index is invalid!");
+    return arr[index];
+}
+
+
 // Gán giá trị mới cho phần tử tại vị trí index
 template<class T>
 void ArrayList<T>::set(int index, const T& e) {

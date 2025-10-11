@@ -1,45 +1,111 @@
 #ifndef QUEUE_H
 #define QUEUE_H
+
 #include "interfaces/IQueue.h"
-#include "interfaces/IList.h"
-#include "lib.h"
+#include "array/ArrayList.h"
+#include "linked_list/SLinkedList.h"
+
 
 /*
- * Class: Queue<T>
- * ----------------
- * Cài đặt tổng quát cho hàng đợi (Queue)
- * sử dụng danh sách tuyến tính (IList<T>) làm backend.
- *
- * Nguyên tắc FIFO (First In, First Out):
- *  - enqueue: thêm phần tử vào cuối (back)
- *  - dequeue: loại bỏ phần tử ở đầu (front)
+ * Class: ArrayQueue<T>
+ * --------------------
+ * Triển khai hàng đợi (Queue) sử dụng ArrayList làm cấu trúc lưu trữ nội bộ.
+ *  - Nguyên tắc FIFO (First In, First Out)
+ *  - enqueue(): thêm phần tử vào cuối
+ *  - dequeue(): xóa phần tử đầu
+ *  - front(): xem phần tử đầu mà không xóa
+ *  - back(): xem phần tử cuối mà không xóa
  */
-
 template <class T>
-class Queue : public IQueue<T> {
+class ArrayQueue : public IQueue<T> {
 private:
-    IList<T>* list;   // backend lưu dữ liệu (ArrayList, SLinkedList, ...)
+    ArrayList<T> list;
 
 public:
-    // ===== Constructor & Destructor =====
-    Queue(IList<T>* impl = nullptr);              // khởi tạo với backend (nếu nullptr thì dùng ArrayList)
-    Queue(const Queue<T>& other);                 // sao chép
-    ~Queue();                                    // hủy queue và backend nếu cần
-    Queue<T>& operator=(const Queue<T>& other);  // gán
+    // ===== Constructor / Destructor =====
+    ArrayQueue();
+    ArrayQueue(const ArrayQueue<T>& other);
+    ~ArrayQueue();
+    ArrayQueue<T>& operator=(const ArrayQueue<T>& other);
 
-    // ===== Thao tác cơ bản =====
-    void enqueue(const T& element) override;     // thêm phần tử vào cuối
-    T dequeue() override;                        // loại bỏ phần tử đầu tiên
-    T& front() override;                         // trả về phần tử đầu tiên
-    T& back() override;                          // trả về phần tử cuối cùng
-    bool empty() const override;                 // kiểm tra hàng đợi có rỗng không
-    int size() const override;                   // trả về số lượng phần tử
-    void clear() override;                       // xóa toàn bộ hàng đợi
+    // ===== Core Methods =====
+    void enqueue(const T& element) override;
+    T dequeue() override;
+    T& front() override;
+    T& back() override;
+    bool empty() const override;
+    int size() const override;
+    void clear() override;
 
-    // ===== Tiện ích & mở rộng =====
-    bool contains(const T& item) const override; // kiểm tra có chứa phần tử item không
-    bool remove(const T& item) override;         // xóa phần tử đầu tiên trùng item
-    string toString() const override;            // xuất chuỗi mô tả queue (front -> back)
+    // ===== Utility Methods =====
+    bool contains(const T& item) const override;
+    bool remove(const T& item) override;
+    string toString() const override;
+
+    // ===== Iterator (traverse front -> back) =====
+    class Iterator {
+    private:
+        const ArrayQueue<T>* queue;
+        int index;
+    public:
+        Iterator(const ArrayQueue<T>* queue, int index);
+        Iterator& operator++();
+        T& operator*();
+        bool operator!=(const Iterator& other) const;
+    };
+
+    Iterator begin() const;
+    Iterator end() const;
+};
+
+
+/*
+ * Class: LinkedQueue<T>
+ * ---------------------
+ * Triển khai hàng đợi (Queue) sử dụng SLinkedList làm cấu trúc lưu trữ nội bộ.
+ *  - Nguyên tắc FIFO (First In, First Out)
+ *  - enqueue(): thêm phần tử vào cuối
+ *  - dequeue(): xóa phần tử đầu
+ */
+template <class T>
+class LinkedQueue : public IQueue<T> {
+private:
+    SLinkedList<T> list;
+
+public:
+    // ===== Constructor / Destructor =====
+    LinkedQueue();
+    LinkedQueue(const LinkedQueue<T>& other);
+    ~LinkedQueue();
+    LinkedQueue<T>& operator=(const LinkedQueue<T>& other);
+
+    // ===== Core Methods =====
+    void enqueue(const T& element) override;
+    T dequeue() override;
+    T& front() override;
+    T& back() override;
+    bool empty() const override;
+    int size() const override;
+    void clear() override;
+
+    // ===== Utility Methods =====
+    bool contains(const T& item) const override;
+    bool remove(const T& item) override;
+    string toString() const override;
+
+    // ===== Iterator =====
+    class Iterator {
+    private:
+        typename SLinkedList<T>::Iterator it;
+    public:
+        Iterator(const typename SLinkedList<T>::Iterator& listIt);
+        Iterator& operator++();
+        const T& operator*() const;
+        bool operator!=(const Iterator& other) const;
+    };
+
+    Iterator begin() const;
+    Iterator end() const;
 };
 
 #endif /* QUEUE_H */

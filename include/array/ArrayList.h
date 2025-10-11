@@ -27,6 +27,7 @@ public:
     int size() const override;
     void clear() override;
     T& get(int index) override;
+    const T& get(int index) const;
     void set(int index, const T& e) override;
     int indexOf(const T& item) const override;
     bool contains(const T& item) const override;

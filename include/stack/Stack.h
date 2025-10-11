@@ -1,47 +1,102 @@
 #ifndef STACK_H
 #define STACK_H
+
 #include "interfaces/IStack.h"
-#include "interfaces/IList.h"
+#include "array/ArrayList.h"
+#include "linked_list/SLinkedList.h"
 #include "lib.h"
 
 /*
- * Class: Stack<T>
- * ----------------
- * Cài đặt tổng quát cho ngăn xếp (Stack)
- * sử dụng một danh sách tuyến tính (IList<T>) làm backend.
- *
- * Cho phép linh hoạt chọn kiểu danh sách cụ thể:
- *  - ArrayList<T>
- *  - SLinkedList<T>
- *  - DLinkedList<T>
- *
- * Nguyên tắc LIFO (Last In, First Out).
+ * File: Stack.h
+ * -------------
+ * Khai báo 2 lớp Stack:
+ *  - ArrayStack<T>: sử dụng ArrayList<T>.
+ *  - LinkedStack<T>: sử dụng SLinkedList<T>.
+ * Mỗi lớp đều có Iterator duyệt phần tử theo thứ tự từ top → bottom.
  */
 
+// ===================== ARRAY STACK =====================
 template <class T>
-class Stack : public IStack<T> {
+class ArrayStack : public IStack<T> {
 private:
-    IList<T>* list;    // backend lưu dữ liệu (ArrayList, SLinkedList, ...)
+    ArrayList<T> list;
 
 public:
-    // ===== Constructor & Destructor =====
-    Stack(IList<T>* impl = nullptr);             // khởi tạo với danh sách backend (mặc định nullptr)
-    Stack(const Stack<T>& other);                // sao chép
-    ~Stack();                                    // hủy stack và backend nếu cần (tùy theo policy cài đặt)
-    Stack<T>& operator=(const Stack<T>& other);  // gán
+    // ===== Constructor / Destructor =====
+    ArrayStack();
+    ArrayStack(const ArrayStack<T>& other);
+    ~ArrayStack();
+    ArrayStack<T>& operator=(const ArrayStack<T>& other);
 
-    // ===== Thao tác cơ bản =====
-    void push(const T& element) override;        // thêm phần tử vào đỉnh
-    T pop() override;                            // loại bỏ phần tử ở đỉnh và trả về giá trị
-    T& top() override;                           // trả về phần tử ở đỉnh mà không loại bỏ
-    bool empty() const override;                 // kiểm tra ngăn xếp có rỗng không
-    int size() const override;                   // trả về số lượng phần tử
-    void clear() override;                       // xóa toàn bộ ngăn xếp
+    // ===== Core Methods =====
+    void push(const T& element) override;
+    T pop() override;
+    T& top() override;
+    bool empty() const override;
+    int size() const override;
+    void clear() override;
+    bool contains(const T& item) const override;
+    bool remove(const T& item) override;
+    string toString() const override;
 
-    // ===== Tiện ích & mở rộng =====
-    bool contains(const T& item) const override; // kiểm tra có chứa phần tử item không
-    bool remove(const T& item) override;         // xóa lần xuất hiện đầu tiên của phần tử item (từ top xuống)
-    string toString() const override;            // xuất chuỗi mô tả stack (ví dụ: [top -> bottom])
+    // ===== Iterator (inner class) =====
+    class Iterator {
+    private:
+        const ArrayStack<T>* stack; // trỏ tới stack gốc
+        int index;                  // chỉ số hiện tại
+    public:
+        Iterator(const ArrayStack<T>* stack, int index);
+        Iterator& operator++();     // tiến tới phần tử kế (top → bottom)
+        const T& operator*() const;
+        bool operator!=(const Iterator& other) const;
+    };
+
+    Iterator begin() const;  // phần tử top
+    Iterator end() const;    // sau phần tử cuối (bottom)
 };
+
+// ===================== LINKED STACK =====================
+template <class T>
+class LinkedStack : public IStack<T> {
+private:
+    SLinkedList<T> list;
+
+public:
+    // ===== Constructor / Destructor =====
+    LinkedStack();
+    LinkedStack(const LinkedStack<T>& other);
+    ~LinkedStack();
+    LinkedStack<T>& operator=(const LinkedStack<T>& other);
+
+    // ===== Core Methods =====
+    void push(const T& element) override;
+    T pop() override;
+    T& top() override;
+    bool empty() const override;
+    int size() const override;
+    void clear() override;
+    bool contains(const T& item) const override;
+    bool remove(const T& item) override;
+    string toString() const override;
+
+    // ===== Iterator (inner class) =====
+    class Iterator {
+    private:
+        typename SLinkedList<T>::Iterator it; // dùng iterator của SLinkedList
+    public:
+        Iterator(const typename SLinkedList<T>::Iterator& listIt);
+        Iterator& operator++();  
+        //T& operator*() const;
+        const T& operator*() const;
+        bool operator!=(const Iterator& other) const;
+    };
+
+    Iterator begin() const;  // top
+    Iterator end() const;    // null
+};
+
+// ===================== DEFAULT STACK TYPE =====================
+template <class T>
+using Stack = LinkedStack<T>;
 
 #endif /* STACK_H */

@@ -57,6 +57,7 @@ public:
 
         Iterator& operator=(const Iterator& other);
         T& operator*();                       // truy cập data
+        const T& operator*() const;
         bool operator!=(const Iterator& other) const;
         bool operator==(const Iterator& other) const;
         Iterator& operator++();               // tiền tố ++it
@@ -65,6 +66,8 @@ public:
 
     Iterator begin();    // iterator trỏ tới head
     Iterator end();      // iterator null (sau tail)
+    Iterator begin() const;
+    Iterator end() const;
 };
 
 #endif // SLINKEDLIST_H

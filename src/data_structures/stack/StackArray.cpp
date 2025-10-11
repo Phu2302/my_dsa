@@ -1,103 +1,159 @@
 #include "stack/Stack.h"
-#include "array/ArrayList.h"
-#include "lib.h"
 
 // ======================= CONSTRUCTOR / DESTRUCTOR =======================
 
-// Khởi tạo stack: nếu không truyền backend, dùng ArrayList mặc định
+// Default constructor
 template<class T>
-Stack<T>::Stack(IList<T>* impl) {
-    // TODO
+ArrayStack<T>::ArrayStack() {
+    // Time complexity: O(1)
 }
 
-// Constructor sao chép
+// Copy constructor
 template<class T>
-Stack<T>::Stack(const Stack<T>& other) {
-    // TODO
+ArrayStack<T>::ArrayStack(const ArrayStack<T>& other) {
+    // Time complexity: O(n)
+    list = other.list;
 }
 
-// Destructor: giải phóng tài nguyên backend nếu có
+// Destructor
 template<class T>
-Stack<T>::~Stack() {
-    // TODO
+ArrayStack<T>::~ArrayStack() {
+    // Time complexity: 
 }
 
-// Toán tử gán
+// Copy assignment operator
 template<class T>
-Stack<T>& Stack<T>::operator=(const Stack<T>& other) {
-    // TODO
+ArrayStack<T>& ArrayStack<T>::operator=(const ArrayStack<T>& other) {
+    // Time complexity: 
+    if (this != &other) list = other.list;
     return *this;
 }
 
-// ======================= CÀI ĐẶT CÁC HÀM IStack =======================
+// ======================= IStack IMPLEMENTATION =======================
 
-// Thêm phần tử vào đỉnh stack
+// Push an element onto the top of the stack
 template<class T>
-void Stack<T>::push(const T& element) {
-    // TODO
+void ArrayStack<T>::push(const T& element) {
+    // Time complexity: 
+    list.add(element);
 }
 
-// Loại bỏ phần tử ở đỉnh và trả về giá trị của nó
+// Remove and return the top element
 template<class T>
-T Stack<T>::pop() {
-    // TODO
-    return T{};
+T ArrayStack<T>::pop() {
+    // Time complexity:
+    if (list.empty()) throw out_of_range("Stack is empty!");
+    return list.removeAt(list.size()-1);
 }
 
-// Trả về phần tử ở đỉnh mà không loại bỏ
+// Return the top element without removing it
 template<class T>
-T& Stack<T>::top() {
-    // TODO
-    static T temp{};
-    return temp;
+T& ArrayStack<T>::top() {
+    // Time complexity:
+    if (list.empty()) throw out_of_range("Stack is empty!"); 
+    return list.get(list.size()-1);
 }
 
-// Kiểm tra ngăn xếp có rỗng không
+// Check if the stack is empty
 template<class T>
-bool Stack<T>::empty() const {
-    // TODO
+bool ArrayStack<T>::empty() const {
+    // Time complexity: 
+    if (list.size() == 0) return true;
     return false;
 }
 
-// Trả về số lượng phần tử trong ngăn xếp
+// Return the number of elements in the stack
 template<class T>
-int Stack<T>::size() const {
-    // TODO
-    return 0;
+int ArrayStack<T>::size() const {
+    // Time complexity: 
+    return list.size();
 }
 
-// Xóa toàn bộ ngăn xếp
+// Remove all elements from the stack
 template<class T>
-void Stack<T>::clear() {
-    // TODO
+void ArrayStack<T>::clear() {
+    // Time complexity: 
+    list.clear();
 }
 
-// ======================= TIỆN ÍCH & MỞ RỘNG =======================
-
-// Kiểm tra có chứa phần tử item không
+// Check if the stack contains a specific item
 template<class T>
-bool Stack<T>::contains(const T& item) const {
-    // TODO
+bool ArrayStack<T>::contains(const T& item) const {
+    // Time complexity: 
+    return list.contains(item);
+}
+
+// Remove the first occurrence of an item (from top to bottom)
+template<class T>
+bool ArrayStack<T>::remove(const T& item) {
+    // Time complexity: 
+    return list.removeItem(item);
+}
+
+// Return a string representation of the stack
+template<class T>
+string ArrayStack<T>::toString() const {
+    // Time complexity: 
+    ostringstream re;
+    re << "[top -> ";
+    for (int i = list.size()-1; i >= 0; i--){
+        re << list.get(i);
+        if (i > 0) re << ", ";
+    }
+    re << "]";
+    return re.str();
+}
+
+// ======================= ITERATOR =======================
+
+// Initialize iterator at the given position
+template<class T>
+ArrayStack<T>::Iterator::Iterator(const ArrayStack<T>* stack, int index) {
+    // Time complexity: 
+    this->stack = stack;
+    this->index = index;
+}
+
+// Move iterator to the next element (top -> bottom)
+template<class T>
+typename ArrayStack<T>::Iterator& ArrayStack<T>::Iterator::operator++() {
+    // Time complexity: 
+    --index;
+    return *this;
+}
+
+// Access the current element
+template<class T>
+const T& ArrayStack<T>::Iterator::operator*() const {
+    return stack->list.get(index);
+}
+
+
+// Compare iterators for inequality
+template<class T>
+bool ArrayStack<T>::Iterator::operator!=(const Iterator& other) const {
+    // Time complexity: 
+    if (index != other.index) return true;
     return false;
 }
 
-// Xóa lần xuất hiện đầu tiên của phần tử item (từ top xuống)
+// Return iterator pointing to the top element
 template<class T>
-bool Stack<T>::remove(const T& item) {
-    // TODO
-    return false;
+typename ArrayStack<T>::Iterator ArrayStack<T>::begin() const {
+    // Time complexity: 
+    return Iterator(this, list.size() - 1);
 }
 
-// Xuất chuỗi mô tả stack (ví dụ: [top -> bottom])
+// Return iterator pointing past the last element (bottom)
 template<class T>
-string Stack<T>::toString() const {
-    // TODO
-    return "[]";
+typename ArrayStack<T>::Iterator ArrayStack<T>::end() const {
+    // Time complexity: 
+    return Iterator(this, -1);
 }
 
 // ======================= EXPLICIT INSTANTIATION =======================
-template class Stack<int>;
-template class Stack<double>;
-template class Stack<string>;
-template class Stack<char>;
-template class Stack<float>;
+template class ArrayStack<int>;
+template class ArrayStack<double>;
+template class ArrayStack<string>;
+template class ArrayStack<char>;
+template class ArrayStack<float>;
