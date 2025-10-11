@@ -16,6 +16,10 @@ DLinkedList<T>::DLinkedList() {
 template<class T>
 DLinkedList<T>::DLinkedList(const DLinkedList<T>& other) {
     // Time complexity: O(n)
+    head = nullptr;
+    tail = nullptr;
+    count = 0;
+
     Node *curOther = other.head;
     while (curOther != nullptr){
         Node *newNode = new Node(curOther->data, nullptr, nullptr);
@@ -49,7 +53,14 @@ DLinkedList<T>::~DLinkedList() {
 template<class T>
 DLinkedList<T>& DLinkedList<T>::operator=(const DLinkedList<T>& other) {
     // Time complexity:
-    
+    if (this == &other) return *this;
+
+    clear();
+    Node *curOther = other.head;
+    while (curOther != nullptr){
+        add(curOther->data);
+        curOther = curOther->next;
+    }
     return *this;
 }
 
@@ -108,6 +119,7 @@ void DLinkedList<T>::add(int index, const T& e) {
     cur->next->prev = newNode;
     newNode->prev = cur;
     cur->next = newNode;
+    count++;
 }
 
 // Xóa phần tử tại vị trí index, trả về phần tử đã xóa
@@ -127,6 +139,16 @@ T DLinkedList<T>::removeAt(int index) {
         return val;
     }
 
+    if (index == 0){
+        Node *del = head;
+        T val = del->data;
+        head->next->prev = nullptr;
+        head = head->next;
+        delete del;
+        count--;
+        return val;
+    }
+
     if (index == count-1){
         Node *del = tail;
         T val = del->data;
@@ -136,6 +158,7 @@ T DLinkedList<T>::removeAt(int index) {
         count--;
         return val;
     }
+
     Node *cur = head;
     for (int i = 0; i < index-1; i++){
         cur = cur->next;
@@ -143,7 +166,7 @@ T DLinkedList<T>::removeAt(int index) {
     Node *del = cur->next;
     T val = del->data;
     cur->next = del->next;
-    del->next->prev = del->prev;
+    del->next->prev = cur;
     delete del;
     count--;
     return val;
@@ -152,7 +175,7 @@ T DLinkedList<T>::removeAt(int index) {
 // Xóa phần tử có giá trị item (nếu tồn tại)
 template<class T>
 bool DLinkedList<T>::removeItem(const T& item) {
-    // Time complexity: O(n)
+    // Time complexity: O(n^2)
     if (count == 0) throw out_of_range("Empty List!");
     Node *cur = head;
     int idx = 0;
@@ -344,7 +367,7 @@ DLinkedList<T>::Iterator::Iterator(Node* node) {
 template<class T>
 typename DLinkedList<T>::Iterator&
 DLinkedList<T>::Iterator::operator=(const Iterator& other) {
-    // Time complexity:
+    // Time complexity: O(1)
     current = other.current;
     return *this;
 }
@@ -352,7 +375,7 @@ DLinkedList<T>::Iterator::operator=(const Iterator& other) {
 // Truy cập phần tử hiện tại
 template<class T>
 T& DLinkedList<T>::Iterator::operator*() {
-    // Time complexity:
+    // Time complexity: O(1)
     if (current == nullptr) throw out_of_range("Not valid");
     return current->data;
 }
@@ -360,7 +383,7 @@ T& DLinkedList<T>::Iterator::operator*() {
 // So sánh iterator khác nhau
 template<class T>
 bool DLinkedList<T>::Iterator::operator!=(const Iterator& other) const {
-    // Time complexity:
+    // Time complexity: O(1)
     if (current != other.current) return true;
     return false;
 }
@@ -368,7 +391,7 @@ bool DLinkedList<T>::Iterator::operator!=(const Iterator& other) const {
 // So sánh iterator bằng nhau
 template<class T>
 bool DLinkedList<T>::Iterator::operator==(const Iterator& other) const {
-    // Time complexity:
+    // Time complexity: O(1)
     if (current == other.current) return true;
     return false;
 }
@@ -377,7 +400,7 @@ bool DLinkedList<T>::Iterator::operator==(const Iterator& other) const {
 template<class T>
 typename DLinkedList<T>::Iterator&
 DLinkedList<T>::Iterator::operator++() {
-    // Time complexity:
+    // Time complexity: O(1)
     if (current == nullptr) throw out_of_range("Not valid");
     current = current->next;
     return *this;
@@ -387,9 +410,9 @@ DLinkedList<T>::Iterator::operator++() {
 template<class T>
 typename DLinkedList<T>::Iterator
 DLinkedList<T>::Iterator::operator++(int) {
-    // Time complexity:
+    // Time complexity: O(1)
     if (current == nullptr) throw out_of_range("Not valid");
-    Iterator = old = *this;
+    Iterator old = *this;
     current = current->next;
     return old;
 }
@@ -398,7 +421,7 @@ DLinkedList<T>::Iterator::operator++(int) {
 template<class T>
 typename DLinkedList<T>::Iterator&
 DLinkedList<T>::Iterator::operator--() {
-    // Time complexity:
+    // Time complexity: O(1)
     if (current == nullptr) throw out_of_range("Not valid");
     current = current->prev;
     return *this;
@@ -408,7 +431,7 @@ DLinkedList<T>::Iterator::operator--() {
 template<class T>
 typename DLinkedList<T>::Iterator
 DLinkedList<T>::Iterator::operator--(int) {
-    // Time complexity:
+    // Time complexity: O(1)
     if (current == nullptr) throw out_of_range("Not valid");
     Iterator old = *this;
     current = current->prev;
@@ -418,28 +441,28 @@ DLinkedList<T>::Iterator::operator--(int) {
 // Trả về iterator đầu danh sách
 template<class T>
 typename DLinkedList<T>::Iterator DLinkedList<T>::begin() {
-    // Time complexity:
+    // Time complexity: O(1)
     return Iterator(head);
 }
 
 // Trả về iterator sau phần tử cuối cùng
 template<class T>
 typename DLinkedList<T>::Iterator DLinkedList<T>::end() {
-    // Time complexity:
+    // Time complexity: O(1)
     return Iterator(nullptr);
 }
 
 // Trả về iterator trỏ tới tail (duyệt ngược)
 template<class T>
 typename DLinkedList<T>::Iterator DLinkedList<T>::rbegin() {
-    // Time complexity:
+    // Time complexity: O(1)
     return Iterator(tail);
 }
 
 // Trả về iterator "trước head" (duyệt ngược)
 template<class T>
 typename DLinkedList<T>::Iterator DLinkedList<T>::rend() {
-    // Time complexity:
+    // Time complexity: O(1)
     return Iterator(nullptr);
 }
 

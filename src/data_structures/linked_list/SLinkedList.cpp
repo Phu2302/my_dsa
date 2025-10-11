@@ -40,7 +40,7 @@ template<class T>
 SLinkedList<T>::~SLinkedList() {
     Node *cur = head;
     while (cur != nullptr){
-        Node *temp = head;
+        Node *temp = cur;
         cur = cur->next;
         delete temp;
     }
@@ -322,8 +322,8 @@ T SLinkedList<T>::pop_back() {
     if (count == 1){
         Node *del = head;
         T val = del->data;
-        head == nullptr;
-        tail == nullptr;
+        head = nullptr;
+        tail = nullptr;
         delete del;
         count--;
         return val;

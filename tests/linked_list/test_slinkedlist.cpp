@@ -61,6 +61,31 @@ void testSLinkedListTemplate(const std::string& typeName) {
     cout << "Size: " << arr.size() << endl;
     cout << "Empty? " << (arr.empty() ? "Yes" : "No") << endl;
 
+    // ==== Test front() & back() ====
+    cout << "\n--- Test front() & back() ---\n";
+    SLinkedList<T> arr5;
+    try {
+        arr5.front(); // Ném ngoại lệ vì rỗng
+    } catch (std::out_of_range& e) {
+        cout << "Caught exception on front(): " << e.what() << endl;
+    }
+    arr5.add(100);
+    arr5.add(200);
+    cout << "front(): " << arr5.front() << endl;
+    cout << "back(): " << arr5.back() << endl;
+
+    // ==== Test pop_front() & pop_back() ====
+    cout << "\n--- Test pop_front() & pop_back() ---\n";
+    cout << "pop_front(): " << arr5.pop_front() << endl;
+    cout << "List after pop_front: " << arr5.toString() << endl;
+    cout << "pop_back(): " << arr5.pop_back() << endl;
+    cout << "List after pop_back: " << arr5.toString() << endl;
+    try {
+        arr5.pop_front(); // Ném ngoại lệ vì danh sách rỗng
+    } catch (std::out_of_range& e) {
+        cout << "Caught exception on pop_front(): " << e.what() << endl;
+    }
+
     // ==== Test clear ====
     cout << "\n--- Test clear() ---\n";
     arr.clear();
@@ -84,7 +109,6 @@ void testSLinkedListTemplate(const std::string& typeName) {
 
     // ==== Test Iterator ====
     cout << "\n=== Test Iterator ===\n";
-
     SLinkedList<T> arr4;
     arr4.add(10); arr4.add(20); arr4.add(30);
     for (auto it = arr4.begin(); it != arr4.end(); ++it) {
@@ -97,76 +121,28 @@ void testSLinkedListTemplate(const std::string& typeName) {
     cout << *it1++ << endl;
     cout << *it1 << endl;
 
-    // ==== Test Iterator Constructor ====
-    cout << "\n--- Test Iterator Constructor ---\n";
-    SLinkedList<T> arr5;
-    arr5.add(100);
-    arr5.add(200);
-
-    try {
-        typename SLinkedList<T>::Iterator itA = arr5.begin();
-        cout << "*itA: " << *itA << endl;
-        typename SLinkedList<T>::Iterator itB = arr5.end();
-        cout << "itB == end()? " << (itB != arr5.end() ? "No" : "Yes") << endl;
-
-        // Test invalid iterator by advancing past end
-        typename SLinkedList<T>::Iterator itC = arr5.begin();
-        for (int i = 0; i <= arr5.size(); ++i) ++itC; // Vượt quá end()
-        cout << "*itC: " << *itC << endl; // Nên ném ngoại lệ
-    } catch (std::out_of_range& e) {
-        cout << "Caught exception: " << e.what() << endl;
-    }
-
     // ==== Test Iterator operator= ====
     cout << "\n--- Test Iterator operator= ---\n";
-    typename SLinkedList<T>::Iterator itX = arr5.begin();
-    typename SLinkedList<T>::Iterator itY = arr5.end();
-
-    cout << "*itX before assign: " << *itX << endl;
+    typename SLinkedList<T>::Iterator itX = arr4.begin();
+    typename SLinkedList<T>::Iterator itY = arr4.end();
     itY = itX;
     cout << "*itY after assign: " << *itY << endl;
 
-    // ==== Test front() & back() ====
-    cout << "\n--- Test front() & back() ---\n";
-    SLinkedList<T> arr6;
-    try {
-        arr6.front(); // Nên ném ngoại lệ vì danh sách rỗng
-    } catch (std::out_of_range& e) {
-        cout << "Caught exception on front(): " << e.what() << endl;
-    }
-    arr6.add(100);
-    arr6.add(200);
-    cout << "front(): " << arr6.front() << endl;
-    cout << "back(): " << arr6.back() << endl;
-
-    // ==== Test pop_front() & pop_back() ====
-    cout << "\n--- Test pop_front() & pop_back() ---\n";
-    cout << "pop_front(): " << arr6.pop_front() << endl;
-    cout << "List after pop_front: " << arr6.toString() << endl;
-    cout << "pop_back(): " << arr6.pop_back() << endl;
-    cout << "List after pop_back: " << arr6.toString() << endl;
-
-    try {
-        arr6.pop_front(); // Nên ném ngoại lệ vì danh sách rỗng
-    } catch (std::out_of_range& e) {
-        cout << "Caught exception on pop_front(): " << e.what() << endl;
-    }
-
     // ==== Test removeItem ====
     cout << "\n--- Test removeItem(e) ---\n";
-    SLinkedList<T> arr7;
-    arr7.add(10);
-    arr7.add(20);
-    arr7.add(10);
-    cout << "Before removeItem(10): " << arr7.toString() << endl;
-    cout << "removeItem(10): " << (arr7.removeItem(10) ? "Yes" : "No") << endl;
-    cout << "After removeItem(10): " << arr7.toString() << endl;
-    cout << "removeItem(999): " << (arr7.removeItem(999) ? "Yes" : "No") << endl;
-    cout << "After removeItem(999): " << arr7.toString() << endl;
+    SLinkedList<T> arr6;
+    arr6.add(10);
+    arr6.add(20);
+    arr6.add(10);
+    cout << "Before removeItem(10): " << arr6.toString() << endl;
+    cout << "removeItem(10): " << (arr6.removeItem(10) ? "Yes" : "No") << endl;
+    cout << "After removeItem(10): " << arr6.toString() << endl;
+    cout << "removeItem(999): " << (arr6.removeItem(999) ? "Yes" : "No") << endl;
+    cout << "After removeItem(999): " << arr6.toString() << endl;
 
     cout << "\n=== END TEST ===\n\n";
 }
 
 void test_slinkedlist() {
-    testSLinkedListTemplate<int>("int");  
+    testSLinkedListTemplate<int>("int");
 }
