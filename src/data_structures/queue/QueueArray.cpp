@@ -12,6 +12,7 @@ ArrayQueue<T>::ArrayQueue() {
 template<class T>
 ArrayQueue<T>::ArrayQueue(const ArrayQueue<T>& other) {
     // Time complexity: 
+    list = other.list;
 }
 
 // Destructor
@@ -24,6 +25,9 @@ ArrayQueue<T>::~ArrayQueue() {
 template<class T>
 ArrayQueue<T>& ArrayQueue<T>::operator=(const ArrayQueue<T>& other) {
     // Time complexity: 
+    if (this != other){
+        list = other.list;
+    }
     return *this;
 }
 
@@ -32,50 +36,53 @@ ArrayQueue<T>& ArrayQueue<T>::operator=(const ArrayQueue<T>& other) {
 // Add element to the back of the queue
 template<class T>
 void ArrayQueue<T>::enqueue(const T& element) {
-    // Time complexity: 
+    // Time complexity:
+    list.add(element);
 }
 
 // Remove and return the front element
 template<class T>
 T ArrayQueue<T>::dequeue() {
-    // Time complexity: 
-    return T();
+    // Time complexity:
+    if (list.empty()) throw out_of_range("Queue is empty!");
+    return list.removeAt(0); 
 }
 
 // Return the front element without removing it
 template<class T>
 T& ArrayQueue<T>::front() {
     // Time complexity: 
-    static T dummy{};
-    return dummy;
+    if (list.empty()) throw out_of_range("Queue is empty!");
+    return list.get(0);
 }
 
 // Return the back element without removing it
 template<class T>
 T& ArrayQueue<T>::back() {
     // Time complexity: 
-    static T dummy{};
-    return dummy;
+    if (list.empty()) throw out_of_range("Queue is empty!");
+    return list.get(list.size()-1);
 }
 
 // Check if the queue is empty
 template<class T>
 bool ArrayQueue<T>::empty() const {
     // Time complexity: 
-    return true;
+    return list.empty();
 }
 
 // Return the number of elements
 template<class T>
 int ArrayQueue<T>::size() const {
     // Time complexity: 
-    return 0;
+    return list.size();
 }
 
 // Remove all elements
 template<class T>
 void ArrayQueue<T>::clear() {
-    // Time complexity: 
+    // Time complexity:
+    list.clear();
 }
 
 // ======================= UTILITY METHODS =======================
@@ -84,21 +91,34 @@ void ArrayQueue<T>::clear() {
 template<class T>
 bool ArrayQueue<T>::contains(const T& item) const {
     // Time complexity: 
-    return false;
+    return list.contains(item);
 }
 
 // Remove first occurrence of an element
 template<class T>
 bool ArrayQueue<T>::remove(const T& item) {
     // Time complexity: 
-    return false;
+    return list.removeItem(item);
 }
 
 // Return string representation of the queue
 template<class T>
 string ArrayQueue<T>::toString() const {
     // Time complexity: 
-    return "[front -> back]";
+    if (list.empty()) return "[front -> ]";
+
+    ostringstream re;
+    re << "[front -> ";
+
+    bool first = true;
+    for (auto it = list.begin(); it != list.end(); it++) {
+        if (!first) re << ", ";
+        re << *it;
+        first = false;
+    }
+
+    re << "]";
+    return re.str();
 }
 
 // ======================= ITERATOR =======================
@@ -114,7 +134,8 @@ ArrayQueue<T>::Iterator::Iterator(const ArrayQueue<T>* queue, int index) {
 // Move iterator to next element (front -> back)
 template<class T>
 typename ArrayQueue<T>::Iterator& ArrayQueue<T>::Iterator::operator++() {
-    // Time complexity: 
+    // Time complexity:
+    ++index;
     return *this;
 }
 
@@ -122,14 +143,14 @@ typename ArrayQueue<T>::Iterator& ArrayQueue<T>::Iterator::operator++() {
 template<class T>
 T& ArrayQueue<T>::Iterator::operator*() {
     // Time complexity: 
-    static T dummy{};
-    return dummy;
+    return queue->list.get(index);
 }
 
 // Compare iterators for inequality
 template<class T>
 bool ArrayQueue<T>::Iterator::operator!=(const Iterator& other) const {
     // Time complexity: 
+    if (index != other.index) return true;
     return false;
 }
 
@@ -137,6 +158,7 @@ bool ArrayQueue<T>::Iterator::operator!=(const Iterator& other) const {
 template<class T>
 typename ArrayQueue<T>::Iterator ArrayQueue<T>::begin() const {
     // Time complexity: 
+    if (list.empty()) return end;
     return Iterator(this, 0);
 }
 
@@ -144,7 +166,7 @@ typename ArrayQueue<T>::Iterator ArrayQueue<T>::begin() const {
 template<class T>
 typename ArrayQueue<T>::Iterator ArrayQueue<T>::end() const {
     // Time complexity: 
-    return Iterator(this, -1);
+    return Iterator(this, list.size());
 }
 
 // ======================= EXPLICIT INSTANTIATION =======================

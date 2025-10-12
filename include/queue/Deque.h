@@ -44,6 +44,21 @@ public:
     bool contains(const T& item) const override;
     bool remove(const T& item) override;
     string toString() const override;
+
+    class Iterator {
+    private:
+        const ArrayDeque<T>* deque;
+        int index;
+    public:
+        Iterator(const ArrayDeque<T>* dq, int idx);
+        Iterator& operator++();
+        T& operator*();
+        bool operator!=(const Iterator& other) const;
+    };
+
+Iterator begin() const;
+Iterator end() const;
+
 };
 
 
@@ -82,6 +97,20 @@ public:
     bool contains(const T& item) const override;
     bool remove(const T& item) override;
     string toString() const override;
+
+    class Iterator {
+    private:
+        typename DLinkedList<T>::Iterator it;
+    public:
+        Iterator(const typename DLinkedList<T>::Iterator& listIt);
+        Iterator& operator++();
+        const T& operator*() const;
+        bool operator!=(const Iterator& other) const;
+    };
+
+Iterator begin() const;
+Iterator end() const;
+
 };
 
 #endif /* DEQUE_H */
