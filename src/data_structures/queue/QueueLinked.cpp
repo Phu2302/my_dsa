@@ -12,6 +12,7 @@ LinkedQueue<T>::LinkedQueue() {
 template<class T>
 LinkedQueue<T>::LinkedQueue(const LinkedQueue<T>& other) {
     // Time complexity: 
+    list = other.list;
 }
 
 // Destructor
@@ -24,6 +25,7 @@ LinkedQueue<T>::~LinkedQueue() {
 template<class T>
 LinkedQueue<T>& LinkedQueue<T>::operator=(const LinkedQueue<T>& other) {
     // Time complexity: 
+    if (this != &other) list = other.list;
     return *this;
 }
 
@@ -33,49 +35,49 @@ LinkedQueue<T>& LinkedQueue<T>::operator=(const LinkedQueue<T>& other) {
 template<class T>
 void LinkedQueue<T>::enqueue(const T& element) {
     // Time complexity: 
+    list.add(element);
 }
 
 // Remove and return the front element
 template<class T>
 T LinkedQueue<T>::dequeue() {
     // Time complexity: 
-    return T();
+    return list.pop_front();
 }
 
 // Return the front element without removing it
 template<class T>
 T& LinkedQueue<T>::front() {
     // Time complexity: 
-    static T dummy{};
-    return dummy;
+    return list.front();
 }
 
 // Return the back element without removing it
 template<class T>
 T& LinkedQueue<T>::back() {
     // Time complexity: 
-    static T dummy{};
-    return dummy;
+    return list.back();
 }
 
 // Check if the queue is empty
 template<class T>
 bool LinkedQueue<T>::empty() const {
     // Time complexity: 
-    return true;
+    return list.empty();
 }
 
 // Return number of elements in the queue
 template<class T>
 int LinkedQueue<T>::size() const {
     // Time complexity: 
-    return 0;
+    return list.size();
 }
 
 // Remove all elements
 template<class T>
 void LinkedQueue<T>::clear() {
     // Time complexity: 
+    return list.clear;
 }
 
 // ======================= UTILITY METHODS =======================
@@ -84,21 +86,30 @@ void LinkedQueue<T>::clear() {
 template<class T>
 bool LinkedQueue<T>::contains(const T& item) const {
     // Time complexity: 
-    return false;
+    return list.contains();
 }
 
 // Remove first occurrence of an item
 template<class T>
 bool LinkedQueue<T>::remove(const T& item) {
     // Time complexity: 
-    return false;
+    return list.removeItem();
 }
 
 // Return string representation of the queue
 template<class T>
 string LinkedQueue<T>::toString() const {
     // Time complexity: 
-    return "[front -> back]";
+    ostringstream re;
+    re << "front ->";
+    bool first = true;
+    for (auto it = list.begin(); it !+ list.end(); it++){
+        if (!first) re << ", ";
+        re << *it;
+        first = false;
+    }
+    re << "]";
+    return re.str();
 }
 
 // ======================= ITERATOR =======================
@@ -114,6 +125,7 @@ LinkedQueue<T>::Iterator::Iterator(const typename SLinkedList<T>::Iterator& list
 template<class T>
 typename LinkedQueue<T>::Iterator& LinkedQueue<T>::Iterator::operator++() {
     // Time complexity: 
+    ++it;
     return *this;
 }
 
@@ -121,14 +133,14 @@ typename LinkedQueue<T>::Iterator& LinkedQueue<T>::Iterator::operator++() {
 template<class T>
 const T& LinkedQueue<T>::Iterator::operator*() const {
     // Time complexity: 
-    static T dummy{};
-    return dummy;
+    return *it;
 }
 
 // Compare iterators for inequality
 template<class T>
 bool LinkedQueue<T>::Iterator::operator!=(const Iterator& other) const {
     // Time complexity: 
+    if (it != other.it) return true;
     return false;
 }
 
