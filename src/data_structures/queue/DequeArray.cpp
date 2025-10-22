@@ -6,6 +6,7 @@
 template<class T>
 ArrayDeque<T>::ArrayDeque() {
     // Time complexity: 
+    
 }
 
 // Copy constructor
@@ -35,49 +36,52 @@ ArrayDeque<T>& ArrayDeque<T>::operator=(const ArrayDeque<T>& other) {
 template<class T>
 void ArrayDeque<T>::enqueue(const T& element) {
     // Time complexity: 
+    list.add(element);
 }
 
 // Remove and return the front element
 template<class T>
 T ArrayDeque<T>::dequeue() {
     // Time complexity: 
-    return T();
+    if (list.empty()) throw out_of_range("Empty List!");
+    return list.removeAt(0);
 }
 
 // Return front element without removing it
 template<class T>
 T& ArrayDeque<T>::front() {
-    // Time complexity: 
-    static T dummy{};
-    return dummy;
+    // Time complexity:
+    if (list.empty()) throw out_of_range("Queue is empty!"); 
+    return list.get(0);
 }
 
 // Return back element without removing it
 template<class T>
 T& ArrayDeque<T>::back() {
     // Time complexity: 
-    static T dummy{};
-    return dummy;
+    if (list.empty()) throw out_of_range("Queue is empty!");
+    return list.get(list.size()-1);
 }
 
 // Check if deque is empty
 template<class T>
 bool ArrayDeque<T>::empty() const {
     // Time complexity: 
-    return true;
+    return list.size();
 }
 
 // Return number of elements
 template<class T>
 int ArrayDeque<T>::size() const {
     // Time complexity: 
-    return 0;
+    return list.size();
 }
 
 // Remove all elements
 template<class T>
 void ArrayDeque<T>::clear() {
-    // Time complexity: 
+    // Time complexity:
+    return list.clear(); 
 }
 
 // ======================= EXTENDED METHODS (Deque) =======================
@@ -86,13 +90,14 @@ void ArrayDeque<T>::clear() {
 template<class T>
 void ArrayDeque<T>::enqueueFront(const T& element) {
     // Time complexity: 
+    list.add(0, element);
 }
 
 // Remove and return the back element
 template<class T>
 T ArrayDeque<T>::dequeueBack() {
     // Time complexity: 
-    return T();
+    return list.removeAt(list.size()-1);
 }
 
 // ======================= UTILITY METHODS =======================
@@ -101,21 +106,33 @@ T ArrayDeque<T>::dequeueBack() {
 template<class T>
 bool ArrayDeque<T>::contains(const T& item) const {
     // Time complexity: 
-    return false;
+    return list.contains();
 }
 
 // Remove first occurrence of a specific item
 template<class T>
 bool ArrayDeque<T>::remove(const T& item) {
     // Time complexity: 
-    return false;
+    return list.removeItem(item);
 }
 
 // Return string representation of the deque
 template<class T>
 string ArrayDeque<T>::toString() const {
     // Time complexity: 
-    return "[front -> back]";
+    if (list.empty()) return "[front -> ]";
+
+    ostringstream re;
+    re << "[front -> ";
+    bool first = true;
+    for (auto it = list.begin(); it != list.end(); it++){
+        if (!first) re << ", ";
+        re << *it;
+        first = false;
+    }
+
+    re << "]";
+    return re.str();
 }
 
 // ======================= ITERATOR =======================
@@ -132,6 +149,7 @@ ArrayDeque<T>::Iterator::Iterator(const ArrayDeque<T>* deque, int index) {
 template<class T>
 typename ArrayDeque<T>::Iterator& ArrayDeque<T>::Iterator::operator++() {
     // Time complexity: 
+    index++;
     return *this;
 }
 
@@ -139,21 +157,22 @@ typename ArrayDeque<T>::Iterator& ArrayDeque<T>::Iterator::operator++() {
 template<class T>
 T& ArrayDeque<T>::Iterator::operator*() {
     // Time complexity: 
-    static T dummy{};
-    return dummy;
+    if (index < 0 || index >= deque->list.size()) throw out_of_range("Iterator out of range");
+    return deque->list.get(index);
 }
 
 // Compare iterators for inequality
 template<class T>
 bool ArrayDeque<T>::Iterator::operator!=(const Iterator& other) const {
     // Time complexity: 
+    if (index != other.index) return true;
     return false;
 }
 
 // Return iterator to the front element
 template<class T>
 typename ArrayDeque<T>::Iterator ArrayDeque<T>::begin() const {
-    // Time complexity: 
+    // Time complexity:
     return Iterator(this, 0);
 }
 
@@ -161,7 +180,7 @@ typename ArrayDeque<T>::Iterator ArrayDeque<T>::begin() const {
 template<class T>
 typename ArrayDeque<T>::Iterator ArrayDeque<T>::end() const {
     // Time complexity: 
-    return Iterator(this, -1);
+    return Iterator(this, list.size());
 }
 
 // ======================= EXPLICIT INSTANTIATION =======================

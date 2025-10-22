@@ -111,7 +111,7 @@ string ArrayQueue<T>::toString() const {
     re << "[front -> ";
 
     bool first = true;
-    for (auto it = list.begin(); it != list.end(); it++) {
+    for (auto it = list.begin(); it != list.end(); it++){
         if (!first) re << ", ";
         re << *it;
         first = false;
@@ -158,7 +158,6 @@ bool ArrayQueue<T>::Iterator::operator!=(const Iterator& other) const {
 template<class T>
 typename ArrayQueue<T>::Iterator ArrayQueue<T>::begin() const {
     // Time complexity: 
-    if (list.empty()) return end;
     return Iterator(this, 0);
 }
 
