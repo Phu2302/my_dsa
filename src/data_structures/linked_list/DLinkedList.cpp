@@ -452,6 +452,20 @@ typename DLinkedList<T>::Iterator DLinkedList<T>::end() {
     return Iterator(nullptr);
 }
 
+
+template<class T>
+typename DLinkedList<T>::Iterator DLinkedList<T>::begin() const {
+    // Time complexity: O(1)
+    return Iterator(head);
+}
+
+// Trả về iterator sau phần tử cuối cùng
+template<class T>
+typename DLinkedList<T>::Iterator DLinkedList<T>::end() const {
+    // Time complexity: O(1)
+    return Iterator(nullptr);
+}
+
 // Trả về iterator trỏ tới tail (duyệt ngược)
 template<class T>
 typename DLinkedList<T>::Iterator DLinkedList<T>::rbegin() {

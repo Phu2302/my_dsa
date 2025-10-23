@@ -6,6 +6,7 @@ void test_slinkedlist();
 void test_dlinkedlist();
 void test_arraystack();
 void test_linkedstack();
+void test_sorting();
 //void test_queue();
 //void test_stack();
 //void test_hash();
@@ -18,6 +19,7 @@ int main() {
     //test_slinkedlist();
     //test_dlinkedlist();
     //test_arraystack();
-    test_linkedstack();
+    //test_linkedstack();
+    test_sorting();
     return 0;
 }

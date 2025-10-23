@@ -48,6 +48,12 @@ public:
     T pop_front() override;                     // xóa và trả về phần tử đầu
     T pop_back() override;                      // xóa và trả về phần tử cuối
 
+    // ===== Sorting algorithms =====
+    void bubbleSort();
+    void insertionSort();
+    void mergeSort();
+
+
     // ===== Iterator =====
     class Iterator {
     private:

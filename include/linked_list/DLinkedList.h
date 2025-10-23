@@ -55,7 +55,13 @@ public:
     T& back() override;                         // phần tử cuối
     void set(int index, const T& e) override;   // thay đổi giá trị tại index
     T pop_front() override;                     // xóa & trả về phần tử đầu
-    T pop_back() override;                      // xóa & trả về phần tử cuối
+    T pop_back() override;                      // xóa & trả về phần tử 
+    
+    // ===== Sorting algorithms =====
+    void bubbleSort();
+    void insertionSort();
+    void mergeSort();
+
 
     // ===== Iterator =====
     class Iterator {
@@ -78,6 +84,9 @@ public:
     Iterator end();       // iterator sau tail (nullptr)
     Iterator rbegin();    // iterator trỏ tới tail
     Iterator rend();      // iterator trước head (nullptr)
+    Iterator begin() const;
+    Iterator end() const;
+
 };
 
 #endif /* DLINKEDLIST_H */

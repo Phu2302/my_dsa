@@ -50,7 +50,8 @@ public:
     public:
         Iterator(const ArrayQueue<T>* queue, int index);
         Iterator& operator++();
-        T& operator*();
+        //T& operator*();
+        const T& operator*() const;
         bool operator!=(const Iterator& other) const;
     };
 

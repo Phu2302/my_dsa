@@ -106,7 +106,7 @@ T ArrayDeque<T>::dequeueBack() {
 template<class T>
 bool ArrayDeque<T>::contains(const T& item) const {
     // Time complexity: 
-    return list.contains();
+    return list.contains(item);
 }
 
 // Remove first occurrence of a specific item
@@ -119,18 +119,15 @@ bool ArrayDeque<T>::remove(const T& item) {
 // Return string representation of the deque
 template<class T>
 string ArrayDeque<T>::toString() const {
-    // Time complexity: 
+    // Time complexity: O(n)
     if (list.empty()) return "[front -> ]";
 
     ostringstream re;
     re << "[front -> ";
-    bool first = true;
-    for (auto it = list.begin(); it != list.end(); it++){
-        if (!first) re << ", ";
-        re << *it;
-        first = false;
+    for (int i = 0; i < list.size(); i++) {
+        re << list.get(i);
+        if (i < list.size() - 1) re << ", ";
     }
-
     re << "]";
     return re.str();
 }
@@ -155,9 +152,7 @@ typename ArrayDeque<T>::Iterator& ArrayDeque<T>::Iterator::operator++() {
 
 // Access current element
 template<class T>
-T& ArrayDeque<T>::Iterator::operator*() {
-    // Time complexity: 
-    if (index < 0 || index >= deque->list.size()) throw out_of_range("Iterator out of range");
+const T& ArrayDeque<T>::Iterator::operator*() const {
     return deque->list.get(index);
 }
 

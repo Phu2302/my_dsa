@@ -37,6 +37,16 @@ public:
     T pop_back() override;
     string toString() const override;
 
+    // ===== Sorting algorithms =====
+    void bubbleSort();
+    void selectionSort();
+    void insertionSort();
+    void shellSort();
+    void quickSort();
+    void mergeSort();
+    void heapSort();
+
+
     // ===== Iterator chuẩn =====
     class Iterator {
     private:
@@ -67,6 +77,8 @@ public:
     // Trả về iterator đầu/cuối
     Iterator begin();
     Iterator end();
+    Iterator begin() const;
+    Iterator end() const;
 };
 
 #endif // ARRAYLIST_H

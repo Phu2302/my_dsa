@@ -342,7 +342,21 @@ typename ArrayList<T>::Iterator ArrayList<T>::end() {
     // TODO
     return Iterator(this, count);
 }
+/*
+// Trả về iterator đầu danh sách
+template<class T>
+typename ArrayList<T>::Iterator ArrayList<T>::begin() const{
+    // TODO
+    return Iterator(this, 0);
+}
 
+// Trả về iterator sau phần tử cuối cùng
+template<class T>
+typename ArrayList<T>::Iterator ArrayList<T>::end() const {
+    // TODO
+    return Iterator(this, count);
+}
+*/
 // ======================= EXPLICIT INSTANTIATION =======================
 template class ArrayList<int>;
 template class ArrayList<double>;

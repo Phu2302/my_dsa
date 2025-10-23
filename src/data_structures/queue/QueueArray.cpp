@@ -25,7 +25,7 @@ ArrayQueue<T>::~ArrayQueue() {
 template<class T>
 ArrayQueue<T>& ArrayQueue<T>::operator=(const ArrayQueue<T>& other) {
     // Time complexity: 
-    if (this != other){
+    if (this != &other){
         list = other.list;
     }
     return *this;
@@ -104,22 +104,19 @@ bool ArrayQueue<T>::remove(const T& item) {
 // Return string representation of the queue
 template<class T>
 string ArrayQueue<T>::toString() const {
-    // Time complexity: 
+    // Time complexity: O(n)
     if (list.empty()) return "[front -> ]";
 
     ostringstream re;
     re << "[front -> ";
-
-    bool first = true;
-    for (auto it = list.begin(); it != list.end(); it++){
-        if (!first) re << ", ";
-        re << *it;
-        first = false;
+    for (int i = 0; i < list.size(); i++) {
+        re << list.get(i);
+        if (i < list.size() - 1) re << ", ";
     }
-
     re << "]";
     return re.str();
 }
+
 
 // ======================= ITERATOR =======================
 
@@ -141,7 +138,7 @@ typename ArrayQueue<T>::Iterator& ArrayQueue<T>::Iterator::operator++() {
 
 // Access current element
 template<class T>
-T& ArrayQueue<T>::Iterator::operator*() {
+const T& ArrayQueue<T>::Iterator::operator*() const {
     // Time complexity: 
     return queue->list.get(index);
 }

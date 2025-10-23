@@ -77,7 +77,7 @@ int LinkedQueue<T>::size() const {
 template<class T>
 void LinkedQueue<T>::clear() {
     // Time complexity: 
-    return list.clear;
+    return list.clear();
 }
 
 // ======================= UTILITY METHODS =======================
@@ -86,28 +86,32 @@ void LinkedQueue<T>::clear() {
 template<class T>
 bool LinkedQueue<T>::contains(const T& item) const {
     // Time complexity: 
-    return list.contains();
+    return list.contains(item);
 }
 
 // Remove first occurrence of an item
 template<class T>
 bool LinkedQueue<T>::remove(const T& item) {
     // Time complexity: 
-    return list.removeItem();
+    return list.removeItem(item);
 }
 
 // Return string representation of the queue
 template<class T>
 string LinkedQueue<T>::toString() const {
-    // Time complexity: 
+    // Time complexity: O(n)
+    if (list.empty()) return "[front -> ]";
+
     ostringstream re;
-    re << "front ->";
-    bool first = true;
-    for (auto it = list.begin(); it !+ list.end(); it++){
-        if (!first) re << ", ";
-        re << *it;
-        first = false;
+    re << "[front -> ";
+
+    for (int i = 0; i < list.size(); i++) {
+        //!
+        re << ((SLinkedList<T>&)list).get(i);
+        //re << list.get(i);
+        if (i < list.size() - 1) re << ", ";
     }
+
     re << "]";
     return re.str();
 }
