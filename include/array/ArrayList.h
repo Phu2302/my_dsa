@@ -38,6 +38,7 @@ public:
     string toString() const override;
 
     // ===== Sorting algorithms =====
+    void printList() const;
     void bubbleSort();
     void selectionSort();
     void insertionSort();
@@ -45,6 +46,8 @@ public:
     void quickSort();
     void mergeSort();
     void heapSort();
+    int partition(int low, int high);
+    void quickSortHelper(int low, int high);
 
 
     // ===== Iterator chuẩn =====

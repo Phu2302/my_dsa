@@ -1,40 +1,48 @@
 #include "array/ArrayList.h"
 #include "lib.h"
+#include "algorithms/sorting.h"
 
 template<typename T>
 void testArrayListSortingTemplate(const string& typeName) {
     cout << "=== Test ArrayList<" << typeName << "> Sorting ===\n\n";
 
     ArrayList<T> arr;
-    arr.add(5);
-    arr.add(1);
-    arr.add(4);
-    arr.add(2);
     arr.add(8);
+    arr.add(7);
+    arr.add(6);
+    arr.add(5);
+    arr.add(4);
+    arr.add(3);
+    arr.add(2);
+    arr.add(1);
 
     cout << "Original: " << arr.toString() << endl;
 
     // ==== Test bubbleSort ====
     cout << "\n--- Test bubbleSort ---\n";
     ArrayList<T> arr1(arr);
+    cout << "Original: " << arr.toString() << endl;
     arr1.bubbleSort();
     cout << "After bubbleSort: " << arr1.toString() << endl;
 
     // ==== Test selectionSort ====
     cout << "\n--- Test selectionSort ---\n";
     ArrayList<T> arr2(arr);
+    cout << "Original: " << arr.toString() << endl;
     arr2.selectionSort();
     cout << "After selectionSort: " << arr2.toString() << endl;
 
     // ==== Test insertionSort ====
     cout << "\n--- Test insertionSort ---\n";
     ArrayList<T> arr3(arr);
+    cout << "Original: " << arr.toString() << endl;
     arr3.insertionSort();
     cout << "After insertionSort: " << arr3.toString() << endl;
 
     // ==== Test shellSort ====
     cout << "\n--- Test shellSort ---\n";
     ArrayList<T> arr4(arr);
+    cout << "Original: " << arr.toString() << endl;
     arr4.shellSort();
     cout << "After shellSort: " << arr4.toString() << endl;
 

@@ -3,70 +3,134 @@
 #include "linked_list/DLinkedList.h"
 #include "array/ArrayList.h"
 
+
+
+
 // ===========================================================
 // ARRAYLIST
 // ===========================================================
 template <class T>
 void ArrayList<T>::bubbleSort() {
-    for (int i = 0; i < count - 1; ++i) {
-        for (int j = 0; j < count - i - 1; ++j) {
-            if (arr[j] > arr[j + 1]) {
-                T tmp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = tmp;
+    // TODO
+    if (count <= 1) return;
+    for (int i = 0; i < count-1; i++){
+        bool swapped = false;
+        for (int j = 0; j < count-i-1; j++){
+            if (arr[j] > arr[j+1]){
+                T temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = temp;
+                swapped = true;
             }
         }
+        printList();
+        if (swapped == false) break;
     }
 }
 
 template <class T>
 void ArrayList<T>::selectionSort() {
-    for (int i = 0; i < count - 1; ++i) {
-        int minIndex = i;
-        for (int j = i + 1; j < count; ++j) {
-            if (arr[j] < arr[minIndex]) {
-                minIndex = j;
-            }
+    // TODO
+    if (count <= 1) return;
+    for (int i = 0; i < count-1; i++){
+        int minIdx = i;
+        for (int j = i + 1; j < count; j++){
+            if (arr[j] < arr[minIdx]) minIdx = j;
         }
-        if (minIndex != i) {
-            T tmp = arr[i];
-            arr[i] = arr[minIndex];
-            arr[minIndex] = tmp;
+
+        if (minIdx != i){
+            T temp = arr[i];
+            arr[i] = arr[minIdx];
+            arr[minIdx] = temp; 
         }
+        printList();
     }
 }
 
 template <class T>
 void ArrayList<T>::insertionSort() {
-    for (int i = 1; i < count; ++i) {
-        T key = arr[i];
-        int j = i - 1;
-        while (j >= 0 && arr[j] > key) {
-            arr[j + 1] = arr[j];
+    // TODO
+    if (count <= 1) return;
+    for (int i = 1; i < count; i++){
+        int j = i;
+        while (j >= 0 && (arr[j-1] > arr[j])){
+            T temp = arr[j];
+            arr[j] = arr[j-1];
+            arr[j-1] = temp;
             j--;
         }
-        arr[j + 1] = key;
+        printList();
     }
 }
 
 template <class T>
 void ArrayList<T>::shellSort() {
-    for (int gap = count / 2; gap > 0; gap /= 2) {
-        for (int i = gap; i < count; ++i) {
-            T temp = arr[i];
-            int j;
-            for (j = i; j >= gap && arr[j - gap] > temp; j -= gap) {
-                arr[j] = arr[j - gap];
+    // TODO
+    if (count <= 1) return;
+    
+    for (int gap = count/2; gap > 0; gap /= 2){
+        for (int i = gap; i < count; i++){
+            int j = i;
+            while (j >= gap && arr[j-gap] > arr[j]){
+                T temp = arr[j];
+                arr[j] = arr[j-gap];
+                arr[j-gap] = temp;
+                j -= gap;
             }
-            arr[j] = temp;
         }
+        printList();
+    }
+}
+
+template <class T>
+int ArrayList<T>::partition(int low, int high) {
+    T pivot = arr[low];
+    int left = low;
+    int right = high;
+
+    while (left < right){
+        // right side
+        while (left < right){
+            if (arr[right] < pivot){
+                arr[left] = arr[right];
+                left++;
+                break;
+            }
+            right--;
+        }
+
+        // left side
+        while (left < right){
+            if (arr[left] > pivot){
+                arr[right] = arr[left];
+                right--; 
+                break;
+            }
+            left++;
+        }
+    }
+
+    arr[left] = pivot;  // when left = right
+    cout << "pivot = " << pivot << " -> ";
+    printList();
+    return left;
+}
+
+template <class T>
+void ArrayList<T>::quickSortHelper(int low, int high) {
+    if (low < high) {
+        int pivotIndex = partition(low, high);
+        quickSortHelper(low, pivotIndex - 1);
+        quickSortHelper(pivotIndex + 1, high);
     }
 }
 
 template <class T>
 void ArrayList<T>::quickSort() {
-    // TODO: implement quickSort
+    if (count <= 1) return;
+    quickSortHelper(0, count - 1);
 }
+
 
 template <class T>
 void ArrayList<T>::mergeSort() {
@@ -87,99 +151,38 @@ void ArrayList<T>::heapSort() {
 
 template <class T>
 void SLinkedList<T>::bubbleSort() {
-    if (head == nullptr) return;
-    for (Node* i = head; i != tail; i = i->next) {
-        for (Node* j = head; j->next != nullptr; j = j->next) {
-            if (j->data > j->next->data) {
-                T tmp = j->data;
-                j->data = j->next->data;
-                j->next->data = tmp;
-            }
-        }
-    }
+    // TODO
 }
 
 template <class T>
 void SLinkedList<T>::insertionSort() {
-    if (head == nullptr || head->next == nullptr) return;
-    Node* sorted = nullptr;
-    Node* current = head;
-
-    while (current != nullptr) {
-        Node* next = current->next;
-
-        if (sorted == nullptr || sorted->data >= current->data) {
-            current->next = sorted;
-            sorted = current;
-        } else {
-            Node* tmp = sorted;
-            while (tmp->next != nullptr && tmp->next->data < current->data)
-                tmp = tmp->next;
-
-            current->next = tmp->next;
-            tmp->next = current;
-        }
-
-        current = next;
-    }
-
-    head = sorted;
+    // TODO
 }
 
 template <class T>
 void SLinkedList<T>::mergeSort() {
-    // TODO: implement mergeSort cho DSLK đơn
+    // TODO
 }
 
 
 
 // ===========================================================
 // DLinkedList<T> Sorting Implementation
-// (Duyệt hai chiều head <-> tail)
 // ===========================================================
 
 template <class T>
 void DLinkedList<T>::bubbleSort() {
-    if (head == nullptr) return;
-    bool swapped;
-    do {
-        swapped = false;
-        Node* curr = head;
-        while (curr->next != nullptr) {
-            if (curr->data > curr->next->data) {
-                T tmp = curr->data;
-                curr->data = curr->next->data;
-                curr->next->data = tmp;
-                swapped = true;
-            }
-            curr = curr->next;
-        }
-    } while (swapped);
+    // TODO
 }
 
 template <class T>
 void DLinkedList<T>::insertionSort() {
-    if (head == nullptr) return;
-    Node* curr = head->next;
-    while (curr != nullptr) {
-        T key = curr->data;
-        Node* prev = curr->prev;
-        while (prev != nullptr && prev->data > key) {
-            prev->next->data = prev->data;
-            prev = prev->prev;
-        }
-        if (prev == nullptr)
-            head->data = key;
-        else
-            prev->next->data = key;
-
-        curr = curr->next;
-    }
+    // TODO
 }
 
 template <class T>
 void DLinkedList<T>::mergeSort() {
-    // TODO: implement mergeSort cho DSLK đôi
+    // TODO
 }
 
 // ===========================================================
