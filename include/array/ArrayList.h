@@ -46,9 +46,12 @@ public:
     void quickSort();
     void mergeSort();
     void heapSort();
+
     int partition(int low, int high);
     void quickSortHelper(int low, int high);
-
+    void merge(int left, int mid, int right);
+    void mergeSortHelper(int left, int right);
+    void heapify(int n, int i);
 
     // ===== Iterator chuẩn =====
     class Iterator {

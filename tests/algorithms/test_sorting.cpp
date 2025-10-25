@@ -49,12 +49,14 @@ void testArrayListSortingTemplate(const string& typeName) {
     // ==== Test quickSort ====
     cout << "\n--- Test quickSort ---\n";
     ArrayList<T> arr5(arr);
+    cout << "Original: " << arr.toString() << endl;
     arr5.quickSort();
     cout << "After quickSort: " << arr5.toString() << endl;
 
     // ==== Test mergeSort ====
     cout << "\n--- Test mergeSort ---\n";
     ArrayList<T> arr6(arr);
+    cout << "Original: " << arr.toString() << endl;
     arr6.mergeSort();
     cout << "After mergeSort: " << arr6.toString() << endl;
 
