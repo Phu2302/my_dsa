@@ -52,7 +52,9 @@ my_dsa/
 │   │   └── MinHeap.h
 │   ├── tree/
 │   │   ├── BST.h
-│   │   └── AVL.h
+│   │   ├── AVL.h
+|   |   ├── BinaryTree.h
+|   |   └── RedBlackTree.h
 │   └── graph/
 │       ├── AdjListGraph.h
 │       └── AdjMatrixGraph.h
@@ -75,8 +77,10 @@ my_dsa/
 │   │   ├── heap/
 │   │   │   └── Heap.cpp
 │   │   ├── tree/
+│   │   │   ├── BinaryTree.cpp
+│   │   │   ├── AVL.cpp
 │   │   │   ├── BST.cpp
-│   │   │   └── AVL.cpp
+|   |   |   └── RedBlackTree.cpp
 │   │   └── graph/
 │   │       ├── AdjListGraph.cpp
 │   │       └── AdjMatrixGraph.cpp
