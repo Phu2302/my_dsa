@@ -109,4 +109,6 @@ public:
     Iterator end() const;
 };
 
+#include "data_structures/queue/QueueArray.cpp"
+
 #endif /* QUEUE_H */

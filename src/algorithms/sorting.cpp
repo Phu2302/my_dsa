@@ -1,7 +1,7 @@
 #include "algorithms/sorting.h"
 #include "linked_list/SLinkedList.h"
 #include "linked_list/DLinkedList.h"
-#include "array/ArrayList.h"
+//#include "array/ArrayList.h"
 
 
 
@@ -274,11 +274,11 @@ void DLinkedList<T>::mergeSort() {
 // ===========================================================
 // EXPLICIT INSTANTIATION
 // ===========================================================
-template class ArrayList<int>;
-template class ArrayList<double>;
-template class ArrayList<string>;
-template class ArrayList<char>;
-template class ArrayList<float>;
+//template class ArrayList<int>;
+//template class ArrayList<double>;
+//template class ArrayList<string>;
+//template class ArrayList<char>;
+//template class ArrayList<float>;
 
 template class SLinkedList<int>;
 template class SLinkedList<double>;

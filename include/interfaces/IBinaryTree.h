@@ -3,52 +3,45 @@
 #include "lib.h"
 
 /*
- * Interface: IBinaryTree<K, V>
- * -----------------------------
- * Mô tả trừu tượng cho cấu trúc dữ liệu Cây Nhị Phân tổng quát (Binary Tree).
- * Các lớp kế thừa: BinarySearchTree<K, V>, AVLTree<K, V>, RedBlackTree<K, V>, ...
- *
- * Yêu cầu:
- *  - K hỗ trợ toán tử so sánh (==, <, >) nếu là cây tìm kiếm.
- *  - Node có tối đa 2 con (left, right).
+ * Interface: IBinaryTree<T>
+ * -------------------------
+ * Cây nhị phân tổng quát hoặc cây nhị phân tìm kiếm (BST/AVL/RBT) dùng 1 kiểu T.
  */
 
-template <class K, class V>
+template <class T>
 class IBinaryTree {
 public:
     virtual ~IBinaryTree() {}
 
-    // ===== CRUD cơ bản =====
-    virtual void insert(const K& key, const V& value) = 0;   // Thêm phần tử (key, value)
-    virtual bool remove(const K& key) = 0;                   // Xóa phần tử theo key
-    virtual bool contains(const K& key) const = 0;           // Kiểm tra key có tồn tại không
-    virtual void clear() = 0;                                // Xóa toàn bộ cây
+    // ===== CRUD =====
+    virtual void insert(const T& value) {}                         // Thêm node có giá trị T
+    virtual bool remove(const T& value) { return false; }          // Xóa node có giá trị T
+    virtual bool contains(const T& value) const { return false; }  // Kiểm tra giá trị có tồn tại
+    virtual void clear() = 0;                                      // Xóa toàn bộ cây
 
     // ===== Truy cập =====
-    virtual const V& get(const K& key) const = 0;            // Lấy giá trị theo key
-    virtual V& get(const K& key) = 0;                        // (phiên bản cho phép ghi)
-    virtual const K& rootKey() const = 0;                    // Trả về key của node gốc
-    virtual const V& rootValue() const = 0;                  // Trả về giá trị của node gốc
+    virtual const T& rootNode() const { static T tmp{}; return tmp; }  // Lấy giá trị ở node gốc
 
-    // ===== Thông tin & trạng thái =====
-    virtual bool empty() const = 0;                          // Cây rỗng?
-    virtual int size() const = 0;                            // Số node
-    virtual int height() const = 0;                          // Chiều cao cây
+    // ===== Trạng thái =====
+    virtual bool empty() const = 0;                                // Cây rỗng?
+    virtual int size() const = 0;                                  // Số lượng node
+    virtual int height() const = 0;                                // Chiều cao cây
 
-    // ===== Duyệt cây (Traversal) =====
-    virtual string inorder() const = 0;                      // Duyệt trung thứ tự (L - R)
-    virtual string preorder() const = 0;                     // Duyệt tiền thứ tự (R - L)
-    virtual string postorder() const = 0;                    // Duyệt hậu thứ tự (L - R)
-    virtual string levelorder() const = 0;                   // Duyệt theo tầng (Breadth-first)
+    // ===== Traversal =====
+    virtual string inorder() const { return ""; }                  // Left - Root - Right
+    virtual string preorder() const { return ""; }                 // Root - Left - Right
+    virtual string postorder() const { return ""; }                // Left - Right - Root
+    virtual string levelorder() const { return ""; }               // Duyệt theo tầng (BFS)
 
-    // ===== Thống kê & tiện ích =====
-    virtual int countLeaves() const = 0;                     // Đếm node lá
-    virtual int countInternalNodes() const = 0;              // Đếm node trong
-    virtual const K& findMinKey() const = 0;                 // Key nhỏ nhất
-    virtual const K& findMaxKey() const = 0;                 // Key lớn nhất
+    // ===== Thống kê =====
+    virtual int countLeaves() const { return 0; }                  // Số node lá
+    virtual int countInternalNodes() const { return 0; }           // Số node có con
+    virtual T sumLeafNodes() const { return T{}; }                 // Tổng giá trị các node lá
+    virtual const T& findMin() const { static T tmp{}; return tmp; } // Giá trị nhỏ nhất
+    virtual const T& findMax() const { static T tmp{}; return tmp; } // Giá trị lớn nhất
 
-    // ===== Xuất chuỗi (debug) =====
-    virtual string toString() const = 0;                     // Xuất cây dưới dạng chuỗi
+    // ===== Debug =====
+    virtual string toString() const { return ""; }                 // Xuất cây dạng chuỗi
 };
 
 #endif /* IBINARYTREE_H */

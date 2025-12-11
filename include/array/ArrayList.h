@@ -87,4 +87,7 @@ public:
     Iterator end() const;
 };
 
+#include "data_structures/array/ArrayList.cpp"
+#include "algorithms/sorting.cpp"
+
 #endif // ARRAYLIST_H

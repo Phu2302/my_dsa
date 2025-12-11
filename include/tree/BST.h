@@ -1,54 +1,53 @@
 #ifndef BST_H
 #define BST_H
 #include "interfaces/IBinaryTree.h"
+#include "queue/Queue.h"
 #include "lib.h"
 
 /*
- * Class: BinarySearchTree<K, V>
- * ------------------------------
+ * Class: BinarySearchTree<T>
+ * --------------------------
  * Cài đặt cấu trúc dữ liệu Cây Nhị Phân Tìm Kiếm (Binary Search Tree).
- * Kế thừa từ IBinaryTree<K, V>.
+ * Kế thừa từ IBinaryTree<T>.
  *
  * Đặc điểm:
- *  - Là cây nhị phân mà với mỗi node: 
- *      + Key của cây con trái < key của node hiện tại
- *      + Key của cây con phải > key của node hiện tại
- *  - Không tự cân bằng như AVL, Red-Black.
+ *  - Với mỗi node:
+ *      + Giá trị cây con trái  < giá trị node hiện tại
+ *      + Giá trị cây con phải > giá trị node hiện tại
+ *  - Không tự cân bằng (không phải AVL, Red-Black).
  *  - Phù hợp cho dữ liệu nhỏ hoặc ít thay đổi.
+ *  - Yêu cầu: T hỗ trợ so sánh (operator<, operator==).
  */
 
-template <class K, class V>
-class BinarySearchTree : public IBinaryTree<K, V> {
+template <class T>
+class BinarySearchTree : public IBinaryTree<T> {
 private:
     // ===== Inner class Node =====
     class Node {
     public:
-        K key;         // khóa so sánh
-        V value;       // dữ liệu đi kèm
-        Node* left;    // con trái
-        Node* right;   // con phải
+        T data;       // Giá trị lưu trong node
+        Node* left;   // Con trái
+        Node* right;  // Con phải
 
-        Node(const K& k, const V& v)
-            : key(k), value(v), left(nullptr), right(nullptr) {}
+        Node(const T& value)
+            : data(value), left(nullptr), right(nullptr) {}
     };
 
 private:
-    Node* root;       // node gốc của cây
-    int nodeCount;    // số lượng node trong cây
+    Node* root;       // Node gốc của cây
+    int nodeCount;    // Số lượng node trong cây
 
 private:
     // ===== Các hàm tiện ích đệ quy (nội bộ) =====
-    void clear(Node*& node);                              // xóa toàn bộ cây
-    Node* insertRec(Node*& node, const K& key, const V& value); // chèn node mới
-    Node* removeRec(Node*& node, const K& key, bool& removed);  // xóa node theo key
-    Node* findMin(Node* node) const;                      // node có key nhỏ nhất
-    Node* findMax(Node* node) const;                      // node có key lớn nhất
-    bool contains(Node* node, const K& key) const;        // kiểm tra key tồn tại
-    const V& get(Node* node, const K& key) const;         // lấy value theo key (read-only)
-    V& get(Node* node, const K& key);                     // lấy value theo key (modifiable)
-    int height(Node* node) const;                         // chiều cao cây
-    int countLeaves(Node* node) const;                    // đếm node lá
-    int countInternalNodes(Node* node) const;             // đếm node trong
+    void clear(Node*& node);                        // Xóa toàn bộ cây con gốc tại node
+    Node* insertRec(Node* node, const T& value);   // Chèn node mới (BST logic)
+    Node* removeRec(Node* node, const T& value, bool& removed); // Xóa node có giá trị value
+    Node* findMin(Node* node) const;                // Node có giá trị nhỏ nhất trong cây con
+    Node* findMax(Node* node) const;                // Node có giá trị lớn nhất trong cây con
+    bool contains(Node* node, const T& value) const;// Kiểm tra value tồn tại
+    int height(Node* node) const;                   // Chiều cao cây con
+    int countLeaves(Node* node) const;              // Đếm node lá
+    int countInternalNodes(Node* node) const;       // Đếm node trong
 
     // ===== Duyệt cây (Traversal) =====
     void inorder(Node* node, stringstream& ss) const;
@@ -58,42 +57,42 @@ private:
 
 public:
     // ===== Constructor & Destructor =====
-    BinarySearchTree();
-    BinarySearchTree(const BinarySearchTree<K, V>& other);
-    ~BinarySearchTree();
-    BinarySearchTree<K, V>& operator=(const BinarySearchTree<K, V>& other);
+    BinarySearchTree();                             // Constructor mặc định
+    BinarySearchTree(const BinarySearchTree<T>& other); // Constructor sao chép
+    ~BinarySearchTree();                            // Destructor
+    BinarySearchTree<T>& operator=(const BinarySearchTree<T>& other); // Toán tử gán
 
-    // ===== CRUD cơ bản (theo IBinaryTree) =====
-    void insert(const K& key, const V& value) override;   // thêm node (key, value)
-    bool remove(const K& key) override;                   // xóa node theo key
-    bool contains(const K& key) const override;           // kiểm tra tồn tại key
-    void clear() override;                                // xóa toàn bộ cây
+    // ===== CRUD cơ bản (theo IBinaryTree<T>) =====
+    void insert(const T& value) override;           // Thêm node có giá trị value
+    bool remove(const T& value) override;           // Xóa node có giá trị value
+    bool contains(const T& value) const override;   // Kiểm tra tồn tại value
+    void clear() override;                          // Xóa toàn bộ cây
 
     // ===== Truy cập =====
-    const V& get(const K& key) const override;            // lấy giá trị theo key (read-only)
-    V& get(const K& key) override;                        // lấy giá trị theo key (modifiable)
-    const K& rootKey() const override;                    // key của node gốc
-    const V& rootValue() const override;                  // value của node gốc
+    const T& rootNode() const override;                 // Giá trị node gốc
+    const T& findMin() const override;              // Giá trị nhỏ nhất (BST)
+    const T& findMax() const override;              // Giá trị lớn nhất (BST)
 
     // ===== Thông tin & trạng thái =====
-    bool empty() const override;                          // cây rỗng?
-    int size() const override;                            // số node
-    int height() const override;                          // chiều cao cây
+    bool empty() const override;                    // Cây rỗng?
+    int size() const override;                      // Số node trong cây
+    int height() const override;                    // Chiều cao cây
 
     // ===== Duyệt cây =====
-    string inorder() const override;
-    string preorder() const override;
-    string postorder() const override;
-    string levelorder() const override;
+    string inorder() const override;                // Left - Root - Right
+    string preorder() const override;               // Root - Left - Right
+    string postorder() const override;              // Left - Right - Root
+    string levelorder() const override;             // Duyệt theo tầng (BFS)
 
     // ===== Tiện ích mở rộng =====
-    int countLeaves() const override;
-    int countInternalNodes() const override;
-    const K& findMinKey() const override;
-    const K& findMaxKey() const override;
+    int countLeaves() const override;               // Số node lá
+    int countInternalNodes() const override;        // Số node trong
 
     // ===== Xuất chuỗi (debug) =====
-    string toString() const override;
+    string toString() const override;               // Xuất cây dưới dạng chuỗi
+
+    // Helper
+    Node* copySubtree(Node* node);
 };
 
 #endif // BST_H

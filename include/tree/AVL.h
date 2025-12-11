@@ -4,100 +4,100 @@
 #include "lib.h"
 
 /*
- * Class: AVLTree<K, V>
- * --------------------
- * Cài đặt cấu trúc dữ liệu Cây AVL (Adelson-Velsky and Landis Tree)
- * Kế thừa từ IBinaryTree<K, V>.
- *
- * Đặc điểm:
- *  - Là cây nhị phân tìm kiếm (BST) có khả năng tự cân bằng.
- *  - Mỗi node lưu cặp (key, value) và giá trị cân bằng (balance factor).
- *  - balance = -1 → trái cao hơn, 0 → cân bằng, 1 → phải cao hơn.
- *  - Độ cao cây luôn O(log N).
+ * Class: AVLTree<T>
+ * -----------------
+ * Cây AVL tự cân bằng dựa vào chiều cao.
  */
 
-template <class K, class V>
-class AVLTree : public IBinaryTree<K, V> {
+template <class T>
+class AVLTree : public IBinaryTree<T> {
 private:
-    // ===== Inner class Node =====
+    enum BalanceValue { LH = -1, EH = 0, RH = 1 };
+
     class Node {
     public:
-        K key;          // khóa so sánh
-        V value;        // dữ liệu đi kèm
-        Node* left;     // con trái
-        Node* right;    // con phải
-        int balance;    // -1: trái cao, 0: cân bằng, 1: phải cao
-
-        Node(const K& k, const V& v, int b = 0)
-            : key(k), value(v), left(nullptr), right(nullptr), balance(b) {}
+        T data;              // giá trị
+        Node* left;          // con trái
+        Node* right;         // con phải
+        BalanceValue balance;// hệ số cân bằng
+        Node(const T& v, BalanceValue b = EH)
+            : data(v), left(nullptr), right(nullptr), balance(b) {}
     };
 
 private:
-    Node* root;       // nút gốc của cây
-    int nodeCount;    // số lượng node trong cây
+    Node* root;         // node gốc
+    int nodeCount;      // số node
 
 private:
-    // ===== Các hàm tiện ích đệ quy (nội bộ) =====
-    void clear(Node*& node);                              // xóa toàn bộ cây
-    int height(Node* node) const;                         // tính chiều cao
-    Node* findMin(Node* node) const;                      // tìm node có key nhỏ nhất
-    Node* findMax(Node* node) const;                      // tìm node có key lớn nhất
-    int countLeaves(Node* node) const;                    // đếm node lá
-    int countInternalNodes(Node* node) const;             // đếm node trong
+    // ===== Utilities =====
+    void clear(Node*& node);                 // xóa cây con
+    int height(Node* node) const;            // chiều cao cây con
+    int getBalance(Node* node) const;        // hệ số cân bằng
+    Node* findMin(Node* node) const;         // node nhỏ nhất
+    Node* findMax(Node* node) const;         // node lớn nhất
+    bool contains(Node* node, const T& v) const; // kiểm tra tồn tại
+    int countLeaves(Node* node) const;       // đếm node lá
+    int countInternalNodes(Node* node) const;// đếm node trong
 
-    // ===== Các hàm cân bằng (AVL-specific) =====
-    Node* rotateLeft(Node*& node);
-    Node* rotateRight(Node*& node);
-    Node* balanceLeft(Node*& node, bool& taller);
-    Node* balanceRight(Node*& node, bool& taller);
-    Node* insertRec(Node*& node, const K& key, const V& value, bool& taller);
-    Node* removeRec(Node*& node, const K& key, bool& shorter, bool& success);
-    bool contains(Node* node, const K& key) const;
-    const V& get(Node* node, const K& key) const;
+    // ===== Rotations =====
+    Node* rotateLeft(Node* node);            // xoay trái
+    Node* rotateRight(Node* node);           // xoay phải
 
+    // ===== Insert Cases =====
+    Node* insertLL(Node* node);              // case LL
+    Node* insertLR(Node* node);              // case LR
+    Node* insertRR(Node* node);              // case RR
+    Node* insertRL(Node* node);              // case RL
+
+    // ===== Rebalance =====
+    Node* rebalanceInsert(Node* node, const T& value); // cân bằng sau insert
+    Node* rebalanceAfterDelete(Node* node);            // cân bằng sau delete
+
+    // ===== Core Recursive Operations =====
+    Node* insertAVL(Node* node, const T& value);       // insert AVL
+    Node* removeAVL(Node* node, const T& value);       // remove AVL
+
+    // ===== Traversals =====
     void inorder(Node* node, stringstream& ss) const;
     void preorder(Node* node, stringstream& ss) const;
     void postorder(Node* node, stringstream& ss) const;
     void levelorder(Node* node, stringstream& ss) const;
 
 public:
-    // ===== Constructor & Destructor =====
+    // ===== Constructor / Destructor =====
     AVLTree();
-    AVLTree(const AVLTree<K, V>& other);
+    AVLTree(const AVLTree<T>& other);
     ~AVLTree();
-    AVLTree<K, V>& operator=(const AVLTree<K, V>& other);
+    AVLTree<T>& operator=(const AVLTree<T>& other);
 
-    // ===== CRUD cơ bản (theo IBinaryTree) =====
-    void insert(const K& key, const V& value) override;    // thêm node (key, value)
-    bool remove(const K& key) override;                    // xóa node theo key
-    bool contains(const K& key) const override;            // kiểm tra tồn tại key
-    void clear() override;                                 // xóa toàn bộ cây
+    // ===== CRUD =====
+    void insert(const T& value) override;    // thêm giá trị
+    bool remove(const T& value) override;    // xóa giá trị
+    bool contains(const T& value) const override; // kiểm tra tồn tại
+    void clear() override;                   // xóa toàn bộ cây
 
     // ===== Truy cập =====
-    const V& get(const K& key) const override;             // lấy giá trị theo key (read-only)
-    V& get(const K& key) override;                         // lấy giá trị theo key (modifiable)
-    const K& rootKey() const override;                     // trả về key của node gốc
-    const V& rootValue() const override;                   // trả về value của node gốc
+    const T& rootNode() const override;      // giá trị node gốc
+    const T& findMin() const override;       // giá trị nhỏ nhất
+    const T& findMax() const override;       // giá trị lớn nhất
 
-    // ===== Thông tin & trạng thái =====
-    bool empty() const override;
-    int size() const override;
-    int height() const override;
+    // ===== Thông tin =====
+    bool empty() const override;             // cây rỗng?
+    int size() const override;               // số node
+    int height() const override;             // chiều cao
 
     // ===== Duyệt cây =====
-    string inorder() const override;
-    string preorder() const override;
-    string postorder() const override;
-    string levelorder() const override;
+    string inorder() const override;         // L - Root - R
+    string preorder() const override;        // Root - L - R
+    string postorder() const override;       // L - R - Root
+    string levelorder() const override;      // BFS
 
-    // ===== Tiện ích mở rộng =====
-    int countLeaves() const override;
-    int countInternalNodes() const override;
-    const K& findMinKey() const override;
-    const K& findMaxKey() const override;
+    // ===== Thống kê =====
+    int countLeaves() const override;        // số node lá
+    int countInternalNodes() const override; // số node trong
 
-    // ===== Xuất chuỗi (debug) =====
-    string toString() const override;
+    // ===== Debug =====
+    string toString() const override;        // xuất chuỗi
 };
 
 #endif // AVL_H

@@ -3,315 +3,362 @@
 // ======================= CONSTRUCTOR / DESTRUCTOR =======================
 
 // Default constructor
-template<class K, class V>
-AVLTree<K, V>::AVLTree() {
+template<class T>
+AVLTree<T>::AVLTree() {
     // Time complexity:
+    root = nullptr;
+    nodeCount = 0;
 }
 
 // Copy constructor
-template<class K, class V>
-AVLTree<K, V>::AVLTree(const AVLTree<K, V>& other) {
+template<class T>
+AVLTree<T>::AVLTree(const AVLTree<T>& other) {
     // Time complexity:
+    // TODO: deep copy nếu cần
 }
 
 // Destructor
-template<class K, class V>
-AVLTree<K, V>::~AVLTree() {
+template<class T>
+AVLTree<T>::~AVLTree() {
     // Time complexity:
+    clear();
 }
 
 // Copy assignment operator
-template<class K, class V>
-AVLTree<K, V>& AVLTree<K, V>::operator=(const AVLTree<K, V>& other) {
+template<class T>
+AVLTree<T>& AVLTree<T>::operator=(const AVLTree<T>& other) {
     // Time complexity:
+    if (this == &other) return *this;
+    clear();
+    // TODO: copy lại dữ liệu
     return *this;
 }
 
-// ======================= UTILITY (PRIVATE HELPERS) =======================
 
-// Clear all nodes recursively
-template<class K, class V>
-void AVLTree<K, V>::clear(Node*& node) {
+// ======================= UTILITIES =======================
+
+// Clear subtree
+template<class T>
+void AVLTree<T>::clear(Node*& node) {
     // Time complexity:
+    if (node == nullptr) return;
+    clear(node->left);
+    clear(node->right);
+    delete node;
+    node = nullptr;
 }
 
-// Compute height of subtree
-template<class K, class V>
-int AVLTree<K, V>::height(Node* node) const {
+// Compute subtree height
+template<class T>
+int AVLTree<T>::height(Node* node) const {
     // Time complexity:
     return 0;
 }
 
-// Find minimum node in subtree
-template<class K, class V>
-typename AVLTree<K, V>::Node* AVLTree<K, V>::findMin(Node* node) const {
+// Get node balance factor
+template<class T>
+int AVLTree<T>::getBalance(Node* node) const {
+    // Time complexity:
+    return 0;
+}
+
+// Find minimum node
+template<class T>
+typename AVLTree<T>::Node*
+AVLTree<T>::findMin(Node* node) const {
     // Time complexity:
     return nullptr;
 }
 
-// Find maximum node in subtree
-template<class K, class V>
-typename AVLTree<K, V>::Node* AVLTree<K, V>::findMax(Node* node) const {
+// Find maximum node
+template<class T>
+typename AVLTree<T>::Node*
+AVLTree<T>::findMax(Node* node) const {
     // Time complexity:
     return nullptr;
 }
 
-// Count leaf nodes in subtree
-template<class K, class V>
-int AVLTree<K, V>::countLeaves(Node* node) const {
+// Check existence
+template<class T>
+bool AVLTree<T>::contains(Node* node, const T& v) const {
+    // Time complexity:
+    return false;
+}
+
+// Count leaf nodes
+template<class T>
+int AVLTree<T>::countLeaves(Node* node) const {
     // Time complexity:
     return 0;
 }
 
-// Count internal (non-leaf) nodes
-template<class K, class V>
-int AVLTree<K, V>::countInternalNodes(Node* node) const {
+// Count internal nodes
+template<class T>
+int AVLTree<T>::countInternalNodes(Node* node) const {
     // Time complexity:
     return 0;
 }
 
-// ======================= ROTATIONS / BALANCING =======================
+
+// ======================= ROTATIONS =======================
 
 // Left rotation
-template<class K, class V>
-typename AVLTree<K, V>::Node* AVLTree<K, V>::rotateLeft(Node*& node) {
+template<class T>
+typename AVLTree<T>::Node*
+AVLTree<T>::rotateLeft(Node* node) {
     // Time complexity:
     return nullptr;
 }
 
 // Right rotation
-template<class K, class V>
-typename AVLTree<K, V>::Node* AVLTree<K, V>::rotateRight(Node*& node) {
+template<class T>
+typename AVLTree<T>::Node*
+AVLTree<T>::rotateRight(Node* node) {
     // Time complexity:
     return nullptr;
 }
 
-// Balance after insertion (left heavy)
-template<class K, class V>
-typename AVLTree<K, V>::Node* AVLTree<K, V>::balanceLeft(Node*& node, bool& taller) {
+
+// ======================= INSERT CASES (LL, LR, RR, RL) =======================
+
+// LL case
+template<class T>
+typename AVLTree<T>::Node*
+AVLTree<T>::insertLL(Node* node) {
     // Time complexity:
     return nullptr;
 }
 
-// Balance after insertion (right heavy)
-template<class K, class V>
-typename AVLTree<K, V>::Node* AVLTree<K, V>::balanceRight(Node*& node, bool& taller) {
+// LR case
+template<class T>
+typename AVLTree<T>::Node*
+AVLTree<T>::insertLR(Node* node) {
     // Time complexity:
     return nullptr;
 }
 
-// Recursive insert helper
-template<class K, class V>
-typename AVLTree<K, V>::Node* AVLTree<K, V>::insertRec(Node*& node, const K& key, const V& value, bool& taller) {
+// RR case
+template<class T>
+typename AVLTree<T>::Node*
+AVLTree<T>::insertRR(Node* node) {
     // Time complexity:
     return nullptr;
 }
 
-// Recursive remove helper
-template<class K, class V>
-typename AVLTree<K, V>::Node* AVLTree<K, V>::removeRec(Node*& node, const K& key, bool& shorter, bool& success) {
+// RL case
+template<class T>
+typename AVLTree<T>::Node*
+AVLTree<T>::insertRL(Node* node) {
     // Time complexity:
     return nullptr;
 }
 
-// Check if key exists in subtree
-template<class K, class V>
-bool AVLTree<K, V>::contains(Node* node, const K& key) const {
+
+// ======================= REBALANCING =======================
+
+// Rebalance after insertion
+template<class T>
+typename AVLTree<T>::Node*
+AVLTree<T>::rebalanceInsert(Node* node, const T& value) {
     // Time complexity:
-    return false;
+    return node;
 }
 
-// Get const reference to value by key
-template<class K, class V>
-const V& AVLTree<K, V>::get(Node* node, const K& key) const {
+// Rebalance after deletion
+template<class T>
+typename AVLTree<T>::Node*
+AVLTree<T>::rebalanceAfterDelete(Node* node) {
     // Time complexity:
-    static V dummy{};
-    return dummy;
+    return node;
 }
+
+
+// ======================= CORE RECURSIVE OPS =======================
+
+// Insert recursively (AVL logic)
+template<class T>
+typename AVLTree<T>::Node*
+AVLTree<T>::insertAVL(Node* node, const T& value) {
+    // Time complexity:
+    return nullptr;
+}
+
+// Remove recursively (AVL logic)
+template<class T>
+typename AVLTree<T>::Node*
+AVLTree<T>::removeAVL(Node* node, const T& value) {
+    // Time complexity:
+    return nullptr;
+}
+
 
 // ======================= TRAVERSAL HELPERS =======================
 
-// Inorder traversal (Left - Root - Right)
-template<class K, class V>
-void AVLTree<K, V>::inorder(Node* node, stringstream& ss) const {
+// Inorder traversal
+template<class T>
+void AVLTree<T>::inorder(Node* node, stringstream& ss) const {
     // Time complexity:
 }
 
-// Preorder traversal (Root - Left - Right)
-template<class K, class V>
-void AVLTree<K, V>::preorder(Node* node, stringstream& ss) const {
+// Preorder traversal
+template<class T>
+void AVLTree<T>::preorder(Node* node, stringstream& ss) const {
     // Time complexity:
 }
 
-// Postorder traversal (Left - Right - Root)
-template<class K, class V>
-void AVLTree<K, V>::postorder(Node* node, stringstream& ss) const {
+// Postorder traversal
+template<class T>
+void AVLTree<T>::postorder(Node* node, stringstream& ss) const {
     // Time complexity:
 }
 
-// Level-order traversal (Breadth-first)
-template<class K, class V>
-void AVLTree<K, V>::levelorder(Node* node, stringstream& ss) const {
+// Level-order traversal
+template<class T>
+void AVLTree<T>::levelorder(Node* node, stringstream& ss) const {
     // Time complexity:
 }
+
 
 // ======================= IBINARYTREE IMPLEMENTATION =======================
 
-// Insert new key-value pair
-template<class K, class V>
-void AVLTree<K, V>::insert(const K& key, const V& value) {
+// Public insert
+template<class T>
+void AVLTree<T>::insert(const T& value) {
     // Time complexity:
 }
 
-// Remove node by key
-template<class K, class V>
-bool AVLTree<K, V>::remove(const K& key) {
-    // Time complexity:
-    return false;
-}
-
-// Check if tree contains a key
-template<class K, class V>
-bool AVLTree<K, V>::contains(const K& key) const {
+// Public remove
+template<class T>
+bool AVLTree<T>::remove(const T& value) {
     // Time complexity:
     return false;
 }
 
-// Clear entire tree
-template<class K, class V>
-void AVLTree<K, V>::clear() {
+// Public contains
+template<class T>
+bool AVLTree<T>::contains(const T& value) const {
     // Time complexity:
+    return false;
 }
 
-// Get const reference to value by key
-template<class K, class V>
-const V& AVLTree<K, V>::get(const K& key) const {
+// Public clear
+template<class T>
+void AVLTree<T>::clear() {
     // Time complexity:
-    static V dummy{};
+    clear(root);
+    root = nullptr;
+    nodeCount = 0;
+}
+
+// Get root value
+template<class T>
+const T& AVLTree<T>::rootNode() const {
+    // Time complexity:
+    static T dummy{};
     return dummy;
 }
 
-// Get modifiable reference to value by key
-template<class K, class V>
-V& AVLTree<K, V>::get(const K& key) {
+// Public findMin
+template<class T>
+const T& AVLTree<T>::findMin() const {
     // Time complexity:
-    static V dummy{};
+    static T dummy{};
     return dummy;
 }
 
-// Get key of root node
-template<class K, class V>
-const K& AVLTree<K, V>::rootKey() const {
+// Public findMax
+template<class T>
+const T& AVLTree<T>::findMax() const {
     // Time complexity:
-    static K dummy{};
+    static T dummy{};
     return dummy;
 }
 
-// Get value of root node
-template<class K, class V>
-const V& AVLTree<K, V>::rootValue() const {
+
+// ======================= TREE INFO METHODS =======================
+
+// Check empty
+template<class T>
+bool AVLTree<T>::empty() const {
     // Time complexity:
-    static V dummy{};
-    return dummy;
+    return nodeCount == 0;
 }
 
-// ======================= TREE INFORMATION =======================
-
-// Check if tree is empty
-template<class K, class V>
-bool AVLTree<K, V>::empty() const {
+// Number of nodes
+template<class T>
+int AVLTree<T>::size() const {
     // Time complexity:
-    return true;
+    return nodeCount;
 }
 
-// Return number of nodes
-template<class K, class V>
-int AVLTree<K, V>::size() const {
+// Height of tree
+template<class T>
+int AVLTree<T>::height() const {
     // Time complexity:
     return 0;
 }
 
-// Return height of tree
-template<class K, class V>
-int AVLTree<K, V>::height() const {
+
+// ======================= PUBLIC TRAVERSALS =======================
+
+// Inorder traversal (public)
+template<class T>
+string AVLTree<T>::inorder() const {
+    // Time complexity:
+    return "";
+}
+
+// Preorder traversal (public)
+template<class T>
+string AVLTree<T>::preorder() const {
+    // Time complexity:
+    return "";
+}
+
+// Postorder traversal (public)
+template<class T>
+string AVLTree<T>::postorder() const {
+    // Time complexity:
+    return "";
+}
+
+// Levelorder traversal (public)
+template<class T>
+string AVLTree<T>::levelorder() const {
+    // Time complexity:
+    return "";
+}
+
+
+// ======================= STATISTICS =======================
+
+// Count leaf nodes
+template<class T>
+int AVLTree<T>::countLeaves() const {
     // Time complexity:
     return 0;
 }
 
-// ======================= TRAVERSAL (PUBLIC INTERFACE) =======================
-
-// Return string of inorder traversal
-template<class K, class V>
-string AVLTree<K, V>::inorder() const {
-    // Time complexity:
-    return "";
-}
-
-// Return string of preorder traversal
-template<class K, class V>
-string AVLTree<K, V>::preorder() const {
-    // Time complexity:
-    return "";
-}
-
-// Return string of postorder traversal
-template<class K, class V>
-string AVLTree<K, V>::postorder() const {
-    // Time complexity:
-    return "";
-}
-
-// Return string of levelorder traversal
-template<class K, class V>
-string AVLTree<K, V>::levelorder() const {
-    // Time complexity:
-    return "";
-}
-
-// ======================= STATISTICAL METHODS =======================
-
-// Count number of leaf nodes
-template<class K, class V>
-int AVLTree<K, V>::countLeaves() const {
+// Count internal nodes
+template<class T>
+int AVLTree<T>::countInternalNodes() const {
     // Time complexity:
     return 0;
 }
 
-// Count number of internal (non-leaf) nodes
-template<class K, class V>
-int AVLTree<K, V>::countInternalNodes() const {
-    // Time complexity:
-    return 0;
-}
 
-// Return key of minimum node
-template<class K, class V>
-const K& AVLTree<K, V>::findMinKey() const {
-    // Time complexity:
-    static K dummy{};
-    return dummy;
-}
+// ======================= DEBUG =======================
 
-// Return key of maximum node
-template<class K, class V>
-const K& AVLTree<K, V>::findMaxKey() const {
-    // Time complexity:
-    static K dummy{};
-    return dummy;
-}
-
-// ======================= DEBUG / STRING OUTPUT =======================
-
-// Convert tree to string representation
-template<class K, class V>
-string AVLTree<K, V>::toString() const {
+// Convert tree to string
+template<class T>
+string AVLTree<T>::toString() const {
     // Time complexity:
     return "AVLTree()";
 }
 
+
 // ======================= EXPLICIT INSTANTIATION =======================
-template class AVLTree<int, int>;
-template class AVLTree<int, string>;
-template class AVLTree<string, int>;
-template class AVLTree<string, string>;
-template class AVLTree<double, double>;
+
+template class AVLTree<int>;
+template class AVLTree<string>;
+template class AVLTree<double>;

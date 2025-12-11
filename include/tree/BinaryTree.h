@@ -4,81 +4,77 @@
 #include "lib.h"
 
 /*
- * Class: BinaryTree<K, V>
- * -----------------------
- * Lớp cơ sở trừu tượng cho mọi cấu trúc cây nhị phân.
- * Kế thừa từ IBinaryTree<K, V>.
+ * Class: BinaryTree<T>
+ * --------------------
+ * Lớp cơ sở cho mọi cấu trúc cây nhị phân.
+ * Kế thừa từ IBinaryTree<T>.
  *
  * Đặc điểm:
  *  - Mỗi node có tối đa 2 con: left, right.
  *  - Không áp đặt quy tắc sắp xếp (không phải BST).
  *  - Cung cấp các thao tác chung: duyệt cây, đếm node, tính chiều cao, ...
- *  - Được kế thừa bởi: BinarySearchTree<K,V>, AVLTree<K,V>, RedBlackTree<K,V>, ...
+ *  - Được kế thừa bởi: BST<T>, AVL<T>, RedBlackTree<T>, ...
  */
 
-template <class K, class V>
-class BinaryTree : public IBinaryTree<K, V> {
+template <class T>
+class BinaryTree : public IBinaryTree<T> {
 protected:
     // ===== Inner class Node =====
     class Node {
     public:
-        K key;        // khóa
-        V value;      // dữ liệu
-        Node* left;   // con trái
-        Node* right;  // con phải
+        T data;           // Giá trị lưu trong node
+        Node* left;       // Con trái
+        Node* right;      // Con phải
 
-        Node(const K& k, const V& v)
-            : key(k), value(v), left(nullptr), right(nullptr) {}
+        Node(const T& value)
+            : data(value), left(nullptr), right(nullptr) {}
     };
 
-protected:
-    Node* root;       // node gốc
-    int nodeCount;    // số lượng node hiện tại
+public:
+    Node* root;           // Node gốc
+    int nodeCount;        // Số lượng node hiện tại
 
 protected:
     // ===== Các hàm tiện ích đệ quy dùng chung =====
-    void clear(Node*& node);                       // xóa toàn bộ cây
-    int height(Node* node) const;                  // tính chiều cao
-    int countLeaves(Node* node) const;             // đếm số node lá
-    int countInternalNodes(Node* node) const;      // đếm node trong
+    void clear(Node*& node);                           // Xóa cây con gốc tại node
+    int height(Node* node) const;                      // Chiều cao của cây con
+    int countLeaves(Node* node) const;                 // Đếm node lá trong cây con
+    int countInternalNodes(Node* node) const;          // Đếm node trong trong cây con
 
-    void inorder(Node* node, stringstream& ss) const;
-    void preorder(Node* node, stringstream& ss) const;
-    void postorder(Node* node, stringstream& ss) const;
-    void levelorder(Node* node, stringstream& ss) const;
+    void inorder(Node* node, stringstream& ss) const;  // Duyệt L - Root - R từ node
+    void preorder(Node* node, stringstream& ss) const; // Duyệt Root - L - R từ node
+    void postorder(Node* node, stringstream& ss) const;// Duyệt L - R - Root từ node
+    void levelorder(Node* node, stringstream& ss) const;// Duyệt theo tầng từ node
 
 public:
     // ===== Constructor & Destructor =====
-    BinaryTree();
-    BinaryTree(const BinaryTree<K, V>& other);
-    virtual ~BinaryTree();
-    BinaryTree<K, V>& operator=(const BinaryTree<K, V>& other);
+    BinaryTree();                                      // Constructor mặc định
+    BinaryTree(const BinaryTree<T>& other);            // Constructor sao chép
+    virtual ~BinaryTree();                             // Destructor
+    BinaryTree<T>& operator=(const BinaryTree<T>& other); // Toán tử gán
 
-    // ===== CRUD cơ bản (phải override ở lớp con) =====
-    virtual void insert(const K& key, const V& value) = 0;
-    virtual bool remove(const K& key) = 0;
-    virtual bool contains(const K& key) const = 0;
-    virtual const V& get(const K& key) const = 0;
-    virtual V& get(const K& key) = 0;
-
-    // ===== Các hàm dùng chung =====
-    void clear() override;             // xóa toàn bộ cây
-    bool empty() const override;       // cây rỗng?
-    int size() const override;         // số node
-    int height() const override;       // chiều cao
+    // ===== Các hàm dùng chung (override IBinaryTree<T>) =====
+    void clear() override;                             // Xóa toàn bộ cây
+    bool empty() const override;                       // Cây rỗng?
+    int size() const override;                         // Số node
+    int height() const override;                       // Chiều cao cây
+    const T& rootNode() const override;                    // Giá trị node gốc
 
     // ===== Duyệt cây =====
-    string inorder() const override;
-    string preorder() const override;
-    string postorder() const override;
-    string levelorder() const override;
+    string inorder() const override;                   // Duyệt L - Root - R
+    string preorder() const override;                  // Duyệt Root - L - R
+    string postorder() const override;                 // Duyệt L - R - Root
+    string levelorder() const override;                // Duyệt theo tầng (BFS)
 
     // ===== Tiện ích mở rộng =====
-    int countLeaves() const override;
-    int countInternalNodes() const override;
+    int countLeaves() const override;                  // Số node lá
+    int countInternalNodes() const override;           // Số node trong
 
     // ===== Debug / Xuất chuỗi =====
-    string toString() const override;
+    string toString() const override;                  // Xuất cây dưới dạng chuỗi
+
+    // Helper
+    Node* copySubtree(Node* node);
 };
 
 #endif // BINARYTREE_H

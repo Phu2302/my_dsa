@@ -8,6 +8,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <typeinfo>
+#include <cassert>
 
 using namespace std;
 
