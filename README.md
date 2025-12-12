@@ -144,6 +144,8 @@ cmake --build build_win
 
 ```bash
 build_win/main.exe
+or 
+build_win\main.exe
 ```
 
 ---

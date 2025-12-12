@@ -15,7 +15,7 @@ typename BinarySearchTree<T>::Node* BinarySearchTree<T>::copySubtree(Node* node)
     if (node == nullptr) return nullptr;
 
     Node *newNode = new Node(node->data);
-    newNode->left = copySubtree(node->left);     // FIXED
+    newNode->left = copySubtree(node->left);
     newNode->right = copySubtree(node->right);
     return newNode;
 }
