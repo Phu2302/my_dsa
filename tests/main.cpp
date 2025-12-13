@@ -10,6 +10,7 @@ void test_sorting();
 void test_binarytree();
 void test_bst();
 void test_avl();
+void test_heap();
 //void test_queue();
 //void test_stack();
 //void test_hash();
@@ -26,6 +27,7 @@ int main() {
     //test_sorting();
     //test_binarytree();
     //test_bst();
-    test_avl();
+    //test_avl();
+    test_heap();
     return 0;
 }
